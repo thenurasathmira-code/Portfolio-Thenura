@@ -1,5 +1,5 @@
 // ====== TYPEWRITER with blinking cursor ======
-const words=["New Innovator","Web Developer","Graphic Designer","Graphic"]; // edit here
+const words=["New Innovator","Web Developer","Graphic Designer","Professional Video Editor"]; // edit here
 const el=document.getElementById('typeText');
 let wi=0, ci=0, del=false;
 function typeLoop(){
