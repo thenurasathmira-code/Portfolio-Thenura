@@ -20,9 +20,10 @@ const projectPages={
     title:'Professional Video Editor',
     desc:'Professional video editing services including reels, promos, and competition demos. Specializing in color grading, motion graphics, sound design, and storytelling for tech-focused content.',
     images:[
-      'https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=800'
+      'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/4491461/pexels-photo-4491461.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/3585047/pexels-photo-3585047.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
     features:['Color Grading & Correction','Motion Graphics & Titles','Sound Design & Mixing','Multi-camera Editing','Export Optimization'],
     tech:['Adobe Premiere Pro','After Effects','DaVinci Resolve','Audition','Media Encoder']
@@ -31,9 +32,10 @@ const projectPages={
     title:'Medicine Reminder System',
     desc:'IoT-based medicine reminder system using ESP32-CAM for patient verification, automated dispensing, voice prompts, and SMS notifications to caregivers.',
     images:[
-      'https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/3938023/pexels-photo-3938023.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=800'
+      'https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/3938023/pexels-photo-3938023.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/4099354/pexels-photo-4099354.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
     features:['Face Recognition Verification','Automated Medicine Dispensing','Voice Prompts & Alerts','SMS Notifications','Real-time Monitoring'],
     tech:['ESP32-CAM','Arduino Uno','OpenCV','DFPlayer Mini','GSM Module']
@@ -42,9 +44,10 @@ const projectPages={
     title:'Medicine Reminder System V2',
     desc:'Enhanced version with Arduino Mega, L298 motor shield, 4-slot dispensing system, RTC scheduling, web dashboard, and comprehensive logging system.',
     images:[
-      'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=800'
+      'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/1476321/pexels-photo-1476321.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
     features:['4-Slot Medicine Storage','RTC Scheduling System','Web Dashboard Interface','Data Logging & Analytics','Improved Motor Control'],
     tech:['Arduino Mega','L298N Motor Shield','RTC Module','ESP8266','HTML/CSS/JS']
@@ -53,9 +56,10 @@ const projectPages={
     title:'Medi Care Tracker',
     desc:'Web-based patient management system for tracking medication schedules, patient confirmations, and generating reports with mobile-responsive design.',
     images:[
-      'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/3938023/pexels-photo-3938023.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=800'
+      'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/3184317/pexels-photo-3184317.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
     features:['Patient Schedule Management','Medication Tracking','Mobile-Responsive Design','Report Generation','Notification System'],
     tech:['React.js','Node.js','MongoDB','Express.js','Bootstrap']
@@ -64,9 +68,10 @@ const projectPages={
     title:'SLIC New Innovation — Silver Medal (2024)',
     desc:'Award-winning innovation project at the All-Island School Inventors Competition. Comprehensive prototype development, technical presentation, and live demonstration.',
     images:[
-      'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg?auto=compress&cs=tinysrgb&w=800',
-      'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800'
+      'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
     features:['Innovation Prototype','Technical Presentation','Live Demonstration','Competition Success','Silver Medal Achievement'],
     tech:['Arduino','Sensors','3D Printing','Presentation Skills','Project Management']
@@ -228,15 +233,60 @@ tick();
 // ====== CUSTOM CURSOR (dot + ring + magnetic hover) ======
 const dot=document.getElementById('cursorDot');
 const ring=document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0;
+let cursorX = 0, cursorY = 0;
+
 window.addEventListener('mousemove',e=>{
-  dot.style.left=ring.style.left=e.clientX+'px';
-  dot.style.top=ring.style.top=e.clientY+'px';
+  mouseX = e.clientX;
+  mouseY = e.clientY;
 });
+
+// Smooth cursor animation
+function animateCursor() {
+  cursorX += (mouseX - cursorX) * 0.1;
+  cursorY += (mouseY - cursorY) * 0.1;
+  
+  dot.style.left = cursorX + 'px';
+  dot.style.top = cursorY + 'px';
+  ring.style.left = cursorX + 'px';
+  ring.style.top = cursorY + 'px';
+  
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
 document.querySelectorAll('.btn,.card,.socials a').forEach(el=>{
   el.addEventListener('mouseenter',()=>ring.style.transform='translate(-50%,-50%) scale(1.6)');
   el.addEventListener('mouseleave',()=>ring.style.transform='translate(-50%,-50%) scale(1)');
 });
 
+// ====== PHOTO MOUSE REFLECTION EFFECT ======
+const photoFrame = document.querySelector('.photoFrame');
+const reflectionOverlay = document.querySelector('.reflectionOverlay');
+
+if (photoFrame && reflectionOverlay) {
+  photoFrame.addEventListener('mousemove', (e) => {
+    const rect = photoFrame.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
+    
+    photoFrame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    
+    const gradientX = (x / rect.width) * 100;
+    const gradientY = (y / rect.height) * 100;
+    reflectionOverlay.style.background = `radial-gradient(circle at ${gradientX}% ${gradientY}%, rgba(255,255,255,0.4) 0%, transparent 50%)`;
+  });
+  
+  photoFrame.addEventListener('mouseleave', () => {
+    photoFrame.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+    reflectionOverlay.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.1) 100%)';
+  });
+}
 // ====== MAIN CAROUSEL BIND ALREADY CALLED ======
 
 // ====== DOWNLOAD CV (replace href) ======
