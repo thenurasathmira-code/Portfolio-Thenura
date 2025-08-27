@@ -255,7 +255,7 @@ createMatrixRain();
 
 // ====== PARTICLE TRAIL CURSOR ======
 const particleTrail = document.getElementById('particleTrail');
-let particles = [];
+let trailParticles = [];
 
 function createParticle(x, y) {
   const particle = document.createElement('div');
@@ -509,7 +509,3 @@ if (photoFrame && reflectionOverlay) {
     reflectionOverlay.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.1) 100%)';
   });
 }
-// ====== MAIN CAROUSEL BIND ALREADY CALLED ======
-
-// ====== DOWNLOAD CV (replace href) ======
-document.getElementById('downloadCV').href = '#'; // replace with your CV file path
