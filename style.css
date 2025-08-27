@@ -7,9 +7,21 @@
   --accent:#10b981;      /* green accent */
   --danger:#ff6a00;      /* fire ring hue */
 }
+
+/* Light Theme Variables */
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --panel: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --neon: #0ea5e9;
+  --accent: #059669;
+  --danger: #dc2626;
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+body{font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:all 0.3s ease}
 
 /* === TECH BACKGROUND (canvas network + scanlines) === */
 #bgCanvas{position:fixed;inset:0;z-index:-2}
@@ -35,6 +47,25 @@ header{position:fixed;top:0;left:0;right:0;z-index:50;background:linear-gradient
 .menu a{color:var(--text);text-decoration:none;font-weight:600;opacity:.85}
 .menu a:hover{color:var(--neon)}
 
+/* === THEME TOGGLE === */
+.theme-toggle{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:var(--panel);
+  border:2px solid var(--neon);
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  transition:all 0.3s ease;
+  color:var(--neon);
+  font-size:18px;
+}
+.theme-toggle:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 20px var(--neon);
+}
+
 main{padding-top:88px;display:flex;flex-direction:column;align-items:center}
 
 /* === HERO: left text, right photo === */
@@ -52,6 +83,15 @@ main{padding-top:88px;display:flex;flex-direction:column;align-items:center}
 .socials{display:flex;gap:12px;margin-top:14px}
 .socials a{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid #1e293b;background:#0f172a;color:var(--neon);text-decoration:none;transition:.25s}
 .socials a:hover{box-shadow:0 0 14px var(--neon)}
+
+/* === WHATSAPP BUTTON === */
+.whatsapp-btn{
+  background:linear-gradient(45deg, #25d366, #128c7e) !important;
+  border-color:#25d366 !important;
+}
+.whatsapp-btn:hover{
+  box-shadow:0 0 20px #25d366 !important;
+}
 
 /* === ENHANCED PHOTO with BLUE RING and MOUSE EFFECTS === */
 .photoWrap{position:relative;place-self:center;}
@@ -72,6 +112,31 @@ main{padding-top:88px;display:flex;flex-direction:column;align-items:center}
 .floatingElement:nth-child(3){bottom:15%;left:20%;animation-delay:2s}
 .floatingElement:nth-child(4){bottom:25%;right:15%;animation-delay:3s}
 @keyframes float{0%,100%{transform:translateY(0px) scale(1)}50%{transform:translateY(-20px) scale(1.2)}}
+
+/* === FLOATING 3D ELEMENTS === */
+.floating-3d-elements{position:fixed;inset:0;pointer-events:none;z-index:-1}
+.floating-chip{position:absolute;width:40px;height:40px;background:rgba(0,229,255,0.1);border:1px solid var(--neon);border-radius:8px;display:grid;place-items:center;color:var(--neon);font-size:18px;animation:float3d 15s infinite ease-in-out;backdrop-filter:blur(10px)}
+.chip-1{top:20%;left:10%;animation-delay:0s}
+.chip-2{top:60%;right:15%;animation-delay:5s}
+.chip-3{bottom:30%;left:20%;animation-delay:10s}
+.chip-4{top:40%;right:40%;animation-delay:7s}
+.hologram-grid{position:absolute;top:50%;left:50%;width:200px;height:200px;transform:translate(-50%,-50%);background:linear-gradient(45deg,transparent 49%,rgba(0,229,255,0.1) 50%,transparent 51%),linear-gradient(-45deg,transparent 49%,rgba(0,229,255,0.1) 50%,transparent 51%);background-size:20px 20px;animation:gridPulse 8s infinite ease-in-out;opacity:0.3}
+@keyframes float3d{0%,100%{transform:translateY(0) rotateX(0deg) rotateY(0deg)}25%{transform:translateY(-30px) rotateX(15deg) rotateY(15deg)}50%{transform:translateY(-60px) rotateX(0deg) rotateY(30deg)}75%{transform:translateY(-30px) rotateX(-15deg) rotateY(15deg)}}
+@keyframes gridPulse{0%,100%{opacity:0.3;transform:translate(-50%,-50%) scale(1)}50%{opacity:0.6;transform:translate(-50%,-50%) scale(1.2)}}
+
+/* === MATRIX CODE BACKGROUND === */
+.matrix-code{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden;opacity:0.1}
+.matrix-char{position:absolute;color:var(--neon);font-family:'Courier New',monospace;font-size:14px;animation:matrixFall linear infinite}
+@keyframes matrixFall{0%{transform:translateY(-100vh);opacity:1}100%{transform:translateY(100vh);opacity:0}}
+
+/* === PARTICLE TRAIL CURSOR === */
+#particleTrail{position:fixed;inset:0;pointer-events:none;z-index:9997}
+.particle{position:absolute;width:4px;height:4px;background:var(--neon);border-radius:50%;pointer-events:none;animation:particleFade 1s ease-out forwards}
+@keyframes particleFade{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0)}}
+
+/* === 3D TILT EFFECT === */
+.tilt-card{transform-style:preserve-3d;transition:transform 0.3s ease}
+.tilt-card:hover{transform:perspective(1000px) rotateX(var(--rotateX,0deg)) rotateY(var(--rotateY,0deg)) scale(1.05)}
 
 /* === ENHANCED BACKGROUND EFFECTS === */
 .hero{position:relative;overflow:hidden}
@@ -139,6 +204,22 @@ section{scroll-margin-top:88px}
 .card-tech{display:flex;gap:8px;flex-wrap:wrap}
 .tech-tag{background:rgba(0,229,255,0.1);color:var(--neon);padding:4px 10px;border-radius:12px;font-size:11px;font-weight:500;border:1px solid rgba(0,229,255,0.2)}
 
+/* === CHATBOT === */
+.chatbot{position:fixed;bottom:100px;right:20px;width:350px;height:500px;background:var(--panel);border:2px solid var(--neon);border-radius:20px;display:none;flex-direction:column;z-index:1000;box-shadow:0 20px 40px rgba(0,0,0,0.3);backdrop-filter:blur(10px)}
+.chatbot.active{display:flex}
+.chatbot-header{padding:15px;background:var(--neon);color:#000;display:flex;align-items:center;gap:10px;border-radius:18px 18px 0 0;font-weight:600}
+.chatbot-close{background:none;border:none;color:#000;font-size:20px;margin-left:auto;cursor:pointer;width:30px;height:30px;border-radius:50%;display:grid;place-items:center}
+.chatbot-close:hover{background:rgba(0,0,0,0.1)}
+.chatbot-messages{flex:1;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.bot-message,.user-message{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:15px;max-width:80%}
+.bot-message{background:rgba(0,229,255,0.1);align-self:flex-start}
+.user-message{background:var(--accent);color:#fff;align-self:flex-end;flex-direction:row-reverse}
+.chatbot-input{padding:15px;display:flex;gap:10px;border-top:1px solid rgba(0,229,255,0.2)}
+.chatbot-input input{flex:1;padding:10px;border:1px solid rgba(0,229,255,0.3);border-radius:20px;background:var(--bg);color:var(--text);outline:none}
+.chatbot-input button{width:40px;height:40px;border:none;background:var(--neon);color:#000;border-radius:50%;cursor:pointer;display:grid;place-items:center}
+.chatbot-toggle{position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:var(--neon);border-radius:50%;display:grid;place-items:center;cursor:pointer;z-index:1001;color:#000;font-size:24px;box-shadow:0 10px 30px rgba(0,229,255,0.3);transition:all 0.3s ease}
+.chatbot-toggle:hover{transform:scale(1.1);box-shadow:0 15px 40px rgba(0,229,255,0.5)}
+
 /* === PROJECT PAGES (router) === */
 .page{display:none}
 .page.active{display:block}
@@ -152,8 +233,10 @@ section{scroll-margin-top:88px}
 /* === CONTACT === */
 .contactWrap{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;max-width:800px;margin:0 auto}
 form{background:var(--panel);border:1px solid #1f2937;border-radius:16px;padding:18px;display:grid;gap:12px}
-input,textarea{background:#0b1220;border:1px solid #1f2937;border-radius:10px;padding:12px;color:var(--text)}
+input,textarea{background:var(--bg);border:1px solid rgba(0,229,255,0.3);border-radius:10px;padding:12px;color:var(--text);transition:all 0.3s ease}
+input:focus,textarea:focus{outline:none;border-color:var(--neon);box-shadow:0 0 10px rgba(0,229,255,0.2)}
 button.submit{background:var(--neon);color:#03121a;border:none;padding:12px;border-radius:10px;font-weight:800;cursor:pointer}
+button.submit:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,229,255,0.3)}
 
 footer{padding:28px 24px;color:var(--muted);text-align:center;width:100%}
 

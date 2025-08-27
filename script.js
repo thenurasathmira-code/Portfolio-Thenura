@@ -230,6 +230,228 @@ function tick(){
 }
 tick();
 
+// ====== MATRIX CODE BACKGROUND ======
+function createMatrixRain() {
+  const matrix = document.getElementById('matrixCode');
+  const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+  
+  function createChar() {
+    const char = document.createElement('div');
+    char.className = 'matrix-char';
+    char.textContent = chars[Math.floor(Math.random() * chars.length)];
+    char.style.left = Math.random() * 100 + 'vw';
+    char.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    char.style.fontSize = (Math.random() * 10 + 10) + 'px';
+    matrix.appendChild(char);
+    
+    setTimeout(() => {
+      if (char.parentNode) char.parentNode.removeChild(char);
+    }, 5000);
+  }
+  
+  setInterval(createChar, 100);
+}
+createMatrixRain();
+
+// ====== PARTICLE TRAIL CURSOR ======
+const particleTrail = document.getElementById('particleTrail');
+let particles = [];
+
+function createParticle(x, y) {
+  const particle = document.createElement('div');
+  particle.className = 'particle';
+  particle.style.left = x + 'px';
+  particle.style.top = y + 'px';
+  particleTrail.appendChild(particle);
+  
+  setTimeout(() => {
+    if (particle.parentNode) particle.parentNode.removeChild(particle);
+  }, 1000);
+}
+
+let lastParticleTime = 0;
+window.addEventListener('mousemove', (e) => {
+  const now = Date.now();
+  if (now - lastParticleTime > 50) { // Throttle particle creation
+    createParticle(e.clientX, e.clientY);
+    lastParticleTime = now;
+  }
+});
+
+// ====== 3D TILT EFFECT ======
+document.querySelectorAll('.tilt-card, .photoFrame').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
+    
+    card.style.setProperty('--rotateX', rotateX + 'deg');
+    card.style.setProperty('--rotateY', rotateY + 'deg');
+  });
+  
+  card.addEventListener('mouseleave', () => {
+    card.style.setProperty('--rotateX', '0deg');
+    card.style.setProperty('--rotateY', '0deg');
+  });
+});
+
+// ====== DARK/LIGHT MODE TOGGLE ======
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const body = document.body;
+
+// Check for saved theme or default to dark
+const currentTheme = localStorage.getItem('theme') || 'dark';
+body.setAttribute('data-theme', currentTheme);
+updateThemeIcon(currentTheme);
+
+themeToggle.addEventListener('click', () => {
+  const currentTheme = body.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  body.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeIcon(newTheme);
+});
+
+function updateThemeIcon(theme) {
+  themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+// ====== LIVE CHATBOT ======
+const chatbot = document.getElementById('chatbot');
+const chatbotToggle = document.getElementById('chatbotToggle');
+const chatbotClose = document.getElementById('chatbotClose');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+const chatMessages = document.getElementById('chatbotMessages');
+
+const botResponses = {
+  'who are you': "I'm Thenura Sathmira, a passionate developer and innovator specializing in web development, IoT systems, and creative design!",
+  'projects': "I've worked on amazing projects like Medicine Reminder Systems with IoT, Professional Video Editing, and won a Silver Medal at SLIC 2024!",
+  'skills': "My skills include Frontend Development (React, HTML, CSS, JS), Arduino/ESP32 programming, Video Editing, UI/UX Design, and AI/ML!",
+  'contact': "You can reach me at thenurasathmira@gmail.com, call +94 70 400 3956, or WhatsApp me directly!",
+  'experience': "I have experience in web development, IoT systems, video editing, and have won recognition for innovative projects at national competitions.",
+  'education': "I'm passionate about technology and continuous learning, with hands-on experience in various programming languages and hardware platforms.",
+  'hello': "Hello! 👋 I'm Thenura's AI assistant. I can tell you about his projects, skills, experience, or how to contact him!",
+  'hi': "Hi there! 😊 Feel free to ask me about Thenura's work, projects, or anything else you'd like to know!",
+  'default': "That's interesting! You can ask me about Thenura's projects, skills, experience, or contact information. What would you like to know?"
+};
+
+chatbotToggle.addEventListener('click', () => {
+  chatbot.classList.add('active');
+});
+
+chatbotClose.addEventListener('click', () => {
+  chatbot.classList.remove('active');
+});
+
+function addMessage(message, isUser = false) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = isUser ? 'user-message' : 'bot-message';
+  messageDiv.innerHTML = `
+    <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
+    <span>${message}</span>
+  `;
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function getBotResponse(userMessage) {
+  const message = userMessage.toLowerCase();
+  for (const key in botResponses) {
+    if (message.includes(key)) {
+      return botResponses[key];
+    }
+  }
+  return botResponses.default;
+}
+
+function sendMessage() {
+  const message = chatInput.value.trim();
+  if (message) {
+    addMessage(message, true);
+    chatInput.value = '';
+    
+    setTimeout(() => {
+      const response = getBotResponse(message);
+      addMessage(response);
+    }, 500);
+  }
+}
+
+chatSend.addEventListener('click', sendMessage);
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+// ====== CONTACT FORM WITH EMAILJS ======
+// Initialize EmailJS (you'll need to replace with your actual keys)
+emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+
+const contactForm = document.getElementById('contactForm');
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const formData = {
+    from_name: document.getElementById('fromName').value,
+    from_email: document.getElementById('fromEmail').value,
+    subject: document.getElementById('subject').value,
+    message: document.getElementById('message').value
+  };
+  
+  // Replace with your EmailJS service ID and template ID
+  emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData)
+    .then(() => {
+      alert('Message sent successfully! 🎉');
+      contactForm.reset();
+    })
+    .catch(() => {
+      alert('Failed to send message. Please try again or contact directly via email/WhatsApp.');
+    });
+});
+
+// ====== PDF DOWNLOAD ======
+document.getElementById('downloadPDF').addEventListener('click', (e) => {
+  e.preventDefault();
+  
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  // Add content to PDF
+  doc.setFontSize(20);
+  doc.text('Thenura Sathmira', 20, 30);
+  doc.setFontSize(12);
+  doc.text('Web Developer | IoT Specialist | Video Editor', 20, 40);
+  doc.text('Email: thenurasathmira@gmail.com', 20, 55);
+  doc.text('Phone: +94 70 400 3956', 20, 65);
+  doc.text('Location: Padukka', 20, 75);
+  
+  doc.setFontSize(16);
+  doc.text('Skills:', 20, 95);
+  doc.setFontSize(12);
+  doc.text('• Frontend Development (HTML, CSS, JavaScript, React)', 25, 105);
+  doc.text('• Arduino/ESP32 Programming', 25, 115);
+  doc.text('• Video Editing (Premiere Pro, After Effects)', 25, 125);
+  doc.text('• UI/UX Design', 25, 135);
+  doc.text('• IoT Systems Development', 25, 145);
+  
+  doc.setFontSize(16);
+  doc.text('Featured Projects:', 20, 165);
+  doc.setFontSize(12);
+  doc.text('• Medicine Reminder System (IoT)', 25, 175);
+  doc.text('• Professional Video Editing Services', 25, 185);
+  doc.text('• SLIC 2024 Silver Medal Winner', 25, 195);
+  doc.text('• Web-based Patient Management System', 25, 205);
+  
+  doc.save('Thenura_Sathmira_Portfolio.pdf');
+});
+
 // ====== CUSTOM CURSOR (dot + ring + magnetic hover) ======
 const dot=document.getElementById('cursorDot');
 const ring=document.getElementById('cursorRing');
