@@ -117,11 +117,9 @@ function renderPage(key){
 // Handle card clicks -> open page
 document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>{
   const slug=c.getAttribute('data-goto');
-  if(slug) {
-    location.hash=`#project/${slug}`;
-    renderPage(slug);
-    window.scrollTo({top:document.getElementById('portfolio').offsetTop-70,behavior:'smooth'});
-  }
+  location.hash=`#project/${slug}`;
+  renderPage(slug);
+  window.scrollTo({top:document.getElementById('portfolio').offsetTop-70,behavior:'smooth'});
 }));
 
 // Hash router
@@ -232,158 +230,6 @@ function tick(){
 }
 tick();
 
-// ====== SUN & MOON DYNAMIC BACKGROUND ======
-function initDynamicSky() {
-  const sky = document.getElementById('dynamicSky');
-  const skyGradient = document.getElementById('skyGradient');
-  const sun = document.getElementById('sun');
-  const moon = document.getElementById('moon');
-  const stars = document.getElementById('stars');
-  const clouds = document.getElementById('clouds');
-  
-  // Create stars
-  for (let i = 0; i < 50; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.left = Math.random() * 100 + '%';
-    star.style.top = Math.random() * 100 + '%';
-    star.style.animationDelay = Math.random() * 3 + 's';
-    stars.appendChild(star);
-  }
-  
-  function updateSky() {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const timeInMinutes = hours * 60 + minutes;
-    
-    // Calculate sun and moon positions (0-100% across screen)
-    const sunProgress = Math.max(0, Math.min(100, ((timeInMinutes - 360) / 720) * 100)); // 6AM to 6PM
-    const moonProgress = timeInMinutes < 360 ? 
-      ((timeInMinutes + 720) / 720) * 100 : // Night time (before 6AM)
-      ((timeInMinutes - 1080) / 720) * 100; // Night time (after 6PM)
-    
-    // Position celestial bodies
-    const sunY = 20 + Math.sin((sunProgress / 100) * Math.PI) * -10; // Arc motion
-    const moonY = 15 + Math.sin((moonProgress / 100) * Math.PI) * -10;
-    
-    sun.style.left = sunProgress + '%';
-    sun.style.top = sunY + '%';
-    moon.style.left = moonProgress + '%';
-    moon.style.top = moonY + '%';
-    
-    // Sky themes based on time
-    let skyClass = '';
-    let sunOpacity = 0;
-    let moonOpacity = 0;
-    let starsOpacity = 0;
-    let cloudsOpacity = 0;
-    
-    if (hours >= 5 && hours < 7) { // Dawn
-      skyClass = 'sky-dawn';
-      sunOpacity = 0.8;
-      cloudsOpacity = 0.3;
-    } else if (hours >= 7 && hours < 10) { // Morning
-      skyClass = 'sky-morning';
-      sunOpacity = 1;
-      cloudsOpacity = 0.5;
-    } else if (hours >= 10 && hours < 15) { // Noon
-      skyClass = 'sky-noon';
-      sunOpacity = 1;
-      cloudsOpacity = 0.7;
-    } else if (hours >= 15 && hours < 18) { // Afternoon
-      skyClass = 'sky-afternoon';
-      sunOpacity = 0.9;
-      cloudsOpacity = 0.4;
-    } else if (hours >= 18 && hours < 20) { // Evening
-      skyClass = 'sky-evening';
-      sunOpacity = 0.5;
-      moonOpacity = 0.3;
-      starsOpacity = 0.3;
-    } else { // Night
-      skyClass = 'sky-night';
-      moonOpacity = 1;
-      starsOpacity = 1;
-    }
-    
-    // Apply styles
-    skyGradient.className = `sky-gradient ${skyClass}`;
-    sun.style.opacity = sunOpacity;
-    moon.style.opacity = moonOpacity;
-    stars.style.opacity = starsOpacity;
-    clouds.style.opacity = cloudsOpacity;
-  }
-  
-  // Update immediately and then every minute
-  updateSky();
-  setInterval(updateSky, 60000);
-}
-
-// Initialize dynamic sky
-initDynamicSky();
-
-// ====== CUSTOM CURSOR (dot + ring + magnetic hover) ======
-const dot=document.getElementById('cursorDot');
-const ring=document.getElementById('cursorRing');
-let mouseX = 0, mouseY = 0;
-let cursorX = 0, cursorY = 0;
-
-window.addEventListener('mousemove',e=>{
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-// Smooth cursor animation
-function animateCursor() {
-  cursorX += (mouseX - cursorX) * 0.1;
-  cursorY += (mouseY - cursorY) * 0.1;
-  
-  dot.style.left = cursorX + 'px';
-  dot.style.top = cursorY + 'px';
-  ring.style.left = cursorX + 'px';
-  ring.style.top = cursorY + 'px';
-  
-  requestAnimationFrame(animateCursor);
-}
-animateCursor();
-
-document.querySelectorAll('.btn,.card,.socials a').forEach(el=>{
-  el.addEventListener('mouseenter',()=>ring.style.transform='translate(-50%,-50%) scale(1.6)');
-  el.addEventListener('mouseleave',()=>ring.style.transform='translate(-50%,-50%) scale(1)');
-});
-
-// ====== PHOTO MOUSE REFLECTION EFFECT ======
-const photoFrame = document.querySelector('.photoFrame');
-const reflectionOverlay = document.querySelector('.reflectionOverlay');
-
-if (photoFrame && reflectionOverlay) {
-  photoFrame.addEventListener('mousemove', (e) => {
-    const rect = photoFrame.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = (y - centerY) / 8;
-    const rotateY = (centerX - x) / 8;
-    
-    photoFrame.style.setProperty('--rotateX', rotateX + 'deg');
-    photoFrame.style.setProperty('--rotateY', rotateY + 'deg');
-    
-    const gradientX = (x / rect.width) * 100;
-    const gradientY = (y / rect.height) * 100;
-    reflectionOverlay.style.background = `radial-gradient(circle at ${gradientX}% ${gradientY}%, rgba(255,255,255,0.6) 0%, rgba(0,229,255,0.3) 30%, transparent 60%)`;
-    reflectionOverlay.style.transform = `translateZ(10px)`;
-  });
-  
-  photoFrame.addEventListener('mouseleave', () => {
-    photoFrame.style.setProperty('--rotateX', '0deg');
-    photoFrame.style.setProperty('--rotateY', '0deg');
-    reflectionOverlay.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 30%, transparent 70%, rgba(0,229,255,0.1) 100%)';
-    reflectionOverlay.style.transform = 'translateZ(0px)';
-  });
-}
-
 // ====== MATRIX CODE BACKGROUND ======
 function createMatrixRain() {
   const matrix = document.getElementById('matrixCode');
@@ -408,52 +254,6 @@ function createMatrixRain() {
 createMatrixRain();
 
 // ====== PARTICLE TRAIL CURSOR ======
-const particleTrail = document.getElementById('particleTrail');
-let trailParticles = [];
-
-function createParticle(x, y) {
-  const particle = document.createElement('div');
-  particle.className = 'particle';
-  particle.style.left = x + 'px';
-  particle.style.top = y + 'px';
-  particleTrail.appendChild(particle);
-  
-  setTimeout(() => {
-    if (particle.parentNode) particle.parentNode.removeChild(particle);
-  }, 1000);
-}
-
-let lastParticleTime = 0;
-window.addEventListener('mousemove', (e) => {
-  const now = Date.now();
-  if (now - lastParticleTime > 50) { // Throttle particle creation
-    createParticle(e.clientX, e.clientY);
-    lastParticleTime = now;
-  }
-});
-
-// ====== 3D TILT EFFECT ======
-document.querySelectorAll('.tilt-card, .photoFrame').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
-    
-    card.style.setProperty('--rotateX', rotateX + 'deg');
-    card.style.setProperty('--rotateY', rotateY + 'deg');
-  });
-  
-  card.addEventListener('mouseleave', () => {
-    card.style.setProperty('--rotateX', '0deg');
-    card.style.setProperty('--rotateY', '0deg');
-  });
-});
-
 const particleTrail = document.getElementById('particleTrail');
 let trailParticles = [];
 
