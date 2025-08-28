@@ -138,6 +138,14 @@ main{padding-top:88px;display:flex;flex-direction:column;align-items:center}
 .tilt-card{transform-style:preserve-3d;transition:transform 0.3s ease}
 .tilt-card:hover{transform:perspective(1000px) rotateX(var(--rotateX,0deg)) rotateY(var(--rotateY,0deg)) scale(1.05)}
 
+#particleTrail{position:fixed;inset:0;pointer-events:none;z-index:9997}
+.particle{position:absolute;width:4px;height:4px;background:var(--neon);border-radius:50%;pointer-events:none;animation:particleFade 1s ease-out forwards}
+@keyframes particleFade{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0)}}
+
+/* === 3D TILT EFFECT === */
+.tilt-card{transform-style:preserve-3d;transition:transform 0.3s ease}
+.tilt-card:hover{transform:perspective(1000px) rotateX(var(--rotateX,0deg)) rotateY(var(--rotateY,0deg)) scale(1.05)}
+
 /* === ENHANCED BACKGROUND EFFECTS === */
 .hero{position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle, rgba(0,229,255,0.1) 0%, transparent 70%);border-radius:50%;animation:pulse 4s ease-in-out infinite}
@@ -250,6 +258,25 @@ button.submit:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,229,
 footer{padding:28px 24px;color:var(--muted);text-align:center;width:100%}
 
 /* === SUN & MOON DYNAMIC BACKGROUND === */
+.dynamic-sky{position:fixed;inset:0;z-index:-4;overflow:hidden;transition:all 2s ease}
+.sky-gradient{position:absolute;inset:0;transition:all 2s ease}
+.sun{position:absolute;width:80px;height:80px;background:radial-gradient(circle, #ffeb3b 0%, #ff9800 70%, #ff5722 100%);border-radius:50%;box-shadow:0 0 50px #ffeb3b, 0 0 100px #ff9800;transition:all 2s ease;opacity:0}
+.moon{position:absolute;width:60px;height:60px;background:radial-gradient(circle, #f5f5f5 0%, #e0e0e0 70%, #bdbdbd 100%);border-radius:50%;box-shadow:0 0 30px #f5f5f5, 0 0 60px #e0e0e0;transition:all 2s ease;opacity:0}
+.stars{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 3s infinite ease-in-out}
+@keyframes twinkle{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+.clouds{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
+.cloud{position:absolute;background:rgba(255,255,255,0.1);border-radius:50px;animation:cloudFloat 20s infinite linear}
+@keyframes cloudFloat{0%{transform:translateX(-100px)}100%{transform:translateX(calc(100vw + 100px))}}
+
+/* Sky color themes */
+.sky-dawn{background:linear-gradient(to bottom, #ff6b6b 0%, #ffa726 50%, #ffcc02 100%)}
+.sky-morning{background:linear-gradient(to bottom, #42a5f5 0%, #66bb6a 50%, #ffee58 100%)}
+.sky-noon{background:linear-gradient(to bottom, #1976d2 0%, #42a5f5 100%)}
+.sky-afternoon{background:linear-gradient(to bottom, #ff7043 0%, #ffab40 50%, #ffee58 100%)}
+.sky-evening{background:linear-gradient(to bottom, #3f51b5 0%, #7986cb 50%, #ff7043 100%)}
+.sky-night{background:linear-gradient(to bottom, #0d47a1 0%, #1565c0 50%, #1976d2 100%)}
+
 .dynamic-sky{position:fixed;inset:0;z-index:-4;overflow:hidden;transition:all 2s ease}
 .sky-gradient{position:absolute;inset:0;transition:all 2s ease}
 .sun{position:absolute;width:80px;height:80px;background:radial-gradient(circle, #ffeb3b 0%, #ff9800 70%, #ff5722 100%);border-radius:50%;box-shadow:0 0 50px #ffeb3b, 0 0 100px #ff9800;transition:all 2s ease;opacity:0}
