@@ -331,20 +331,28 @@ const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 const chatMessages = document.getElementById('chatbotMessages');
 
+// Enhanced AI responses with more personality and detail
 const botResponses = {
-  'who are you': "I'm Thenura Sathmira, a passionate developer and innovator specializing in web development, IoT systems, and creative design!",
-  'projects': "I've worked on amazing projects like Medicine Reminder Systems with IoT, Professional Video Editing, and won a Silver Medal at SLIC 2024!",
-  'skills': "My skills include Frontend Development (React, HTML, CSS, JS), Arduino/ESP32 programming, Video Editing, UI/UX Design, and AI/ML!",
-  'contact': "You can reach me at thenurasathmira@gmail.com, call +94 70 400 3956, or WhatsApp me directly!",
-  'experience': "I have experience in web development, IoT systems, video editing, and have won recognition for innovative projects at national competitions.",
-  'education': "I'm passionate about technology and continuous learning, with hands-on experience in various programming languages and hardware platforms.",
-  'hello': "Hello! 👋 I'm Thenura's AI assistant. I can tell you about his projects, skills, experience, or how to contact him!",
-  'hi': "Hi there! 😊 Feel free to ask me about Thenura's work, projects, or anything else you'd like to know!",
-  'default': "That's interesting! You can ask me about Thenura's projects, skills, experience, or contact information. What would you like to know?"
+  'who are you': "I'm Thenura Sathmira! 🚀 A passionate innovator and developer from Sri Lanka. I specialize in creating cutting-edge IoT solutions, stunning web applications, and professional video content. I recently won a Silver Medal at SLIC 2024 for my innovative projects!",
+  'projects': "🎯 Here are my featured projects:\n\n🏥 **Medicine Reminder Systems** - IoT healthcare solutions with face recognition\n🎬 **Professional Video Editing** - Award-winning content creation\n🏆 **SLIC 2024 Winner** - Silver medal innovation\n💻 **Web Applications** - Modern, responsive solutions\n\nWhich project interests you most?",
+  'skills': "💪 **My Technical Arsenal:**\n\n🌐 **Frontend:** React.js, HTML5, CSS3, JavaScript\n🔧 **Hardware:** Arduino, ESP32, Raspberry Pi\n🎨 **Design:** UI/UX, Video Editing, Graphics\n🤖 **AI/ML:** OpenCV, Python, TensorFlow\n🏆 **Innovation:** Award-winning project development\n\nI love combining creativity with technology!",
+  'contact': "📞 **Let's Connect!**\n\n📧 Email: thenurasathmira@gmail.com\n📱 Phone: +94 70 400 3956\n💬 WhatsApp: Direct messaging available\n🌍 Location: Padukka, Sri Lanka\n\nI'm always excited to discuss new opportunities and innovative projects!",
+  'experience': "🎯 **My Journey:**\n\n🏆 **SLIC 2024 Silver Medalist** - National recognition\n💻 **Full-Stack Developer** - Modern web solutions\n🔧 **IoT Specialist** - Healthcare & automation systems\n🎬 **Video Editor** - Professional content creation\n🎨 **UI/UX Designer** - User-centered design\n\nI bring creativity and technical excellence to every project!",
+  'education': "📚 **Continuous Learning:**\n\nI'm passionate about staying at the forefront of technology through:\n• Hands-on project development\n• Competition participation\n• Self-directed learning\n• Industry best practices\n• Innovation challenges\n\nLearning never stops in tech! 🚀",
+  'hello': "Hello there! 👋✨ I'm Thenura's AI assistant, powered by advanced conversational AI! I'm here to tell you all about his amazing work, innovative projects, and technical expertise. What would you like to explore?",
+  'hi': "Hi! 😊🤖 Welcome to Thenura's portfolio! I'm his intelligent assistant, ready to answer any questions about his projects, skills, achievements, or how to get in touch. What interests you most?",
+  'medicine': "🏥 **Medicine Reminder Systems** are my specialty!\n\n**V1 Features:**\n• ESP32-CAM with face recognition\n• Automated dispensing\n• Voice prompts & SMS alerts\n\n**V2 Enhancements:**\n• Arduino Mega with 4-slot system\n• Web dashboard interface\n• Advanced scheduling\n\nThese systems help patients never miss their medication!",
+  'video': "🎬 **Professional Video Editing Services:**\n\n• Promotional videos & reels\n• Competition demonstrations\n• Color grading & motion graphics\n• Sound design & mixing\n• Multi-camera editing\n\nI use industry-standard tools like Premiere Pro, After Effects, and DaVinci Resolve to create stunning visual content!",
+  'web': "💻 **Web Development Expertise:**\n\n• Modern React.js applications\n• Responsive design principles\n• Full-stack development\n• Database integration\n• Performance optimization\n\nI create fast, beautiful, and user-friendly web experiences!",
+  'award': "🏆 **SLIC 2024 Silver Medal Achievement:**\n\nI won recognition at the All-Island School Inventors Competition for my innovative project! This national-level competition showcases the best young inventors in Sri Lanka. The achievement represents:\n\n• Technical innovation\n• Problem-solving skills\n• Presentation excellence\n• Real-world impact\n\nIt's a proud moment in my journey!",
+  'default': "🤔 That's an interesting question! I'm here to help you learn about Thenura's work. Try asking about:\n\n• 'projects' - His amazing innovations\n• 'skills' - Technical expertise\n• 'experience' - Professional journey\n• 'contact' - How to reach him\n• 'awards' - Recognition & achievements\n\nWhat would you like to know? 😊"
 };
+
+let isTyping = false;
 
 chatbotToggle.addEventListener('click', () => {
   chatbot.classList.add('active');
+  chatbotToggle.classList.remove('pulse');
 });
 
 chatbotClose.addEventListener('click', () => {
@@ -356,10 +364,32 @@ function addMessage(message, isUser = false) {
   messageDiv.className = isUser ? 'user-message' : 'bot-message';
   messageDiv.innerHTML = `
     <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
-    <span>${message}</span>
+    <span>${message.replace(/\n/g, '<br>')}</span>
   `;
   chatMessages.appendChild(messageDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showTypingIndicator() {
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'typing-indicator';
+  typingDiv.id = 'typingIndicator';
+  typingDiv.innerHTML = `
+    <i class="fas fa-robot"></i>
+    <span>Thenura's AI is thinking</span>
+    <div class="typing-dot"></div>
+    <div class="typing-dot"></div>
+    <div class="typing-dot"></div>
+  `;
+  chatMessages.appendChild(typingDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const typingIndicator = document.getElementById('typingIndicator');
+  if (typingIndicator) {
+    typingIndicator.remove();
+  }
 }
 
 function getBotResponse(userMessage) {
@@ -374,22 +404,34 @@ function getBotResponse(userMessage) {
 
 function sendMessage() {
   const message = chatInput.value.trim();
-  if (message) {
+  if (message && !isTyping) {
+    isTyping = true;
     addMessage(message, true);
     chatInput.value = '';
     
+    showTypingIndicator();
+    
     setTimeout(() => {
+      removeTypingIndicator();
       const response = getBotResponse(message);
       addMessage(response);
-    }, 500);
+      isTyping = false;
+    }, 1000 + Math.random() * 1000); // Random delay for more natural feel
   }
 }
 
 chatSend.addEventListener('click', sendMessage);
 chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') sendMessage();
+  if (e.key === 'Enter' && !isTyping) sendMessage();
 });
 
+// Add pulse effect to chatbot toggle periodically
+setInterval(() => {
+  if (!chatbot.classList.contains('active')) {
+    chatbotToggle.classList.add('pulse');
+    setTimeout(() => chatbotToggle.classList.remove('pulse'), 2000);
+  }
+}, 15000);
 // ====== CONTACT FORM WITH EMAILJS ======
 // Initialize EmailJS (you'll need to replace with your actual keys)
 emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
@@ -452,6 +494,96 @@ document.getElementById('downloadPDF').addEventListener('click', (e) => {
   doc.save('Thenura_Sathmira_Portfolio.pdf');
 });
 
+// ====== SUN & MOON DYNAMIC BACKGROUND ======
+function initDynamicSky() {
+  const sky = document.getElementById('dynamicSky');
+  const skyGradient = document.getElementById('skyGradient');
+  const sun = document.getElementById('sun');
+  const moon = document.getElementById('moon');
+  const stars = document.getElementById('stars');
+  const clouds = document.getElementById('clouds');
+  
+  // Create stars
+  for (let i = 0; i < 50; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    stars.appendChild(star);
+  }
+  
+  function updateSky() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const timeInMinutes = hours * 60 + minutes;
+    
+    // Calculate sun and moon positions (0-100% across screen)
+    const sunProgress = Math.max(0, Math.min(100, ((timeInMinutes - 360) / 720) * 100)); // 6AM to 6PM
+    const moonProgress = timeInMinutes < 360 ? 
+      ((timeInMinutes + 720) / 720) * 100 : // Night time (before 6AM)
+      ((timeInMinutes - 1080) / 720) * 100; // Night time (after 6PM)
+    
+    // Position celestial bodies
+    const sunY = 20 + Math.sin((sunProgress / 100) * Math.PI) * -10; // Arc motion
+    const moonY = 15 + Math.sin((moonProgress / 100) * Math.PI) * -10;
+    
+    sun.style.left = sunProgress + '%';
+    sun.style.top = sunY + '%';
+    moon.style.left = moonProgress + '%';
+    moon.style.top = moonY + '%';
+    
+    // Sky themes based on time
+    let skyClass = '';
+    let sunOpacity = 0;
+    let moonOpacity = 0;
+    let starsOpacity = 0;
+    let cloudsOpacity = 0;
+    
+    if (hours >= 5 && hours < 7) { // Dawn
+      skyClass = 'sky-dawn';
+      sunOpacity = 0.8;
+      cloudsOpacity = 0.3;
+    } else if (hours >= 7 && hours < 10) { // Morning
+      skyClass = 'sky-morning';
+      sunOpacity = 1;
+      cloudsOpacity = 0.5;
+    } else if (hours >= 10 && hours < 15) { // Noon
+      skyClass = 'sky-noon';
+      sunOpacity = 1;
+      cloudsOpacity = 0.7;
+    } else if (hours >= 15 && hours < 18) { // Afternoon
+      skyClass = 'sky-afternoon';
+      sunOpacity = 0.9;
+      cloudsOpacity = 0.4;
+    } else if (hours >= 18 && hours < 20) { // Evening
+      skyClass = 'sky-evening';
+      sunOpacity = 0.5;
+      moonOpacity = 0.3;
+      starsOpacity = 0.3;
+    } else { // Night
+      skyClass = 'sky-night';
+      moonOpacity = 1;
+      starsOpacity = 1;
+    }
+    
+    // Apply styles
+    skyGradient.className = `sky-gradient ${skyClass}`;
+    sun.style.opacity = sunOpacity;
+    moon.style.opacity = moonOpacity;
+    stars.style.opacity = starsOpacity;
+    clouds.style.opacity = cloudsOpacity;
+  }
+  
+  // Update immediately and then every minute
+  updateSky();
+  setInterval(updateSky, 60000);
+}
+
+// Initialize dynamic sky
+initDynamicSky();
+
 // ====== CUSTOM CURSOR (dot + ring + magnetic hover) ======
 const dot=document.getElementById('cursorDot');
 const ring=document.getElementById('cursorRing');
@@ -494,18 +626,22 @@ if (photoFrame && reflectionOverlay) {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
+    const rotateX = (y - centerY) / 8;
+    const rotateY = (centerX - x) / 8;
     
-    photoFrame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    photoFrame.style.setProperty('--rotateX', rotateX + 'deg');
+    photoFrame.style.setProperty('--rotateY', rotateY + 'deg');
     
     const gradientX = (x / rect.width) * 100;
     const gradientY = (y / rect.height) * 100;
-    reflectionOverlay.style.background = `radial-gradient(circle at ${gradientX}% ${gradientY}%, rgba(255,255,255,0.4) 0%, transparent 50%)`;
+    reflectionOverlay.style.background = `radial-gradient(circle at ${gradientX}% ${gradientY}%, rgba(255,255,255,0.6) 0%, rgba(0,229,255,0.3) 30%, transparent 60%)`;
+    reflectionOverlay.style.transform = `translateZ(10px)`;
   });
   
   photoFrame.addEventListener('mouseleave', () => {
-    photoFrame.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-    reflectionOverlay.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.1) 100%)';
+    photoFrame.style.setProperty('--rotateX', '0deg');
+    photoFrame.style.setProperty('--rotateY', '0deg');
+    reflectionOverlay.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 30%, transparent 70%, rgba(0,229,255,0.1) 100%)';
+    reflectionOverlay.style.transform = 'translateZ(0px)';
   });
 }
