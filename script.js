@@ -1,158 +1,253 @@
 // ====== TYPEWRITER with blinking cursor ======
-const words=["New Innovator","Web Developer","Graphic Designer","Professional Video Editor"]; // edit here
-const el=document.getElementById('typeText');
-let wi=0, ci=0, del=false;
-function typeLoop(){
-  const w=words[wi];
-  el.textContent=w.slice(0,ci);
-  if(!del && ci<=w.length){ ci++; }
-  else if(del && ci>=0){ ci--; }
-  if(ci===w.length+1){ del=true; setTimeout(typeLoop,1000); return; }
-  if(ci===0 && del){ del=false; wi=(wi+1)%words.length; }
-  setTimeout(typeLoop, del?60:110);
+const words = ["New Innovator", "Web Developer", "Graphic Designer", "Professional Video Editor"];
+const el = document.getElementById('typeText');
+let wordIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+
+function typeLoop() {
+  const currentWord = words[wordIndex];
+  
+  if (!isDeleting && charIndex <= currentWord.length) {
+    el.textContent = currentWord.slice(0, charIndex);
+    charIndex++;
+  } else if (isDeleting && charIndex >= 0) {
+    el.textContent = currentWord.slice(0, charIndex);
+    charIndex--;
+  }
+  
+  if (charIndex === currentWord.length + 1) {
+    isDeleting = true;
+    setTimeout(typeLoop, 1000);
+    return;
+  }
+  
+  if (charIndex === 0 && isDeleting) {
+    isDeleting = false;
+    wordIndex = (wordIndex + 1) % words.length;
+  }
+  
+  setTimeout(typeLoop, isDeleting ? 60 : 110);
 }
+
+// Start typewriter effect
 typeLoop();
 
-// ====== SIMPLE ROUTER for per-project pages ======
-const pages=document.getElementById('pages');
-const projectPages={
-  'video-editor':{
-    title:'Professional Video Editor',
-    desc:'Professional video editing services including reels, promos, and competition demos. Specializing in color grading, motion graphics, sound design, and storytelling for tech-focused content.',
-    images:[
+// ====== PROJECT ROUTER for expandable project pages ======
+const pages = document.getElementById('pages');
+const projectPages = {
+  'video-editor': {
+    title: 'Professional Video Editor',
+    desc: 'Professional video editing services including reels, promos, and competition demos. Specializing in color grading, motion graphics, sound design, and storytelling for tech-focused content.',
+    images: [
       'https://images.pexels.com/photos/3945313/pexels-photo-3945313.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/4491461/pexels-photo-4491461.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/3585047/pexels-photo-3585047.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
-    features:['Color Grading & Correction','Motion Graphics & Titles','Sound Design & Mixing','Multi-camera Editing','Export Optimization'],
-    tech:['Adobe Premiere Pro','After Effects','DaVinci Resolve','Audition','Media Encoder']
+    features: ['Color Grading & Correction', 'Motion Graphics & Titles', 'Sound Design & Mixing', 'Multi-camera Editing', 'Export Optimization'],
+    tech: ['Adobe Premiere Pro', 'After Effects', 'DaVinci Resolve', 'Audition', 'Media Encoder']
   },
-  'medicine-reminder':{
-    title:'Medicine Reminder System',
-    desc:'IoT-based medicine reminder system using ESP32-CAM for patient verification, automated dispensing, voice prompts, and SMS notifications to caregivers.',
-    images:[
+  'medicine-reminder': {
+    title: 'Medicine Reminder System',
+    desc: 'IoT-based medicine reminder system using ESP32-CAM for patient verification, automated dispensing, voice prompts, and SMS notifications to caregivers.',
+    images: [
       'https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/3938023/pexels-photo-3938023.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/4099354/pexels-photo-4099354.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
-    features:['Face Recognition Verification','Automated Medicine Dispensing','Voice Prompts & Alerts','SMS Notifications','Real-time Monitoring'],
-    tech:['ESP32-CAM','Arduino Uno','OpenCV','DFPlayer Mini','GSM Module']
+    features: ['Face Recognition Verification', 'Automated Medicine Dispensing', 'Voice Prompts & Alerts', 'SMS Notifications', 'Real-time Monitoring'],
+    tech: ['ESP32-CAM', 'Arduino Uno', 'OpenCV', 'DFPlayer Mini', 'GSM Module']
   },
-  'medicine-reminder-v2':{
-    title:'Medicine Reminder System V2',
-    desc:'Enhanced version with Arduino Mega, L298 motor shield, 4-slot dispensing system, RTC scheduling, web dashboard, and comprehensive logging system.',
-    images:[
+  'medicine-reminder-v2': {
+    title: 'Medicine Reminder System V2',
+    desc: 'Enhanced version with Arduino Mega, L298 motor shield, 4-slot dispensing system, RTC scheduling, web dashboard, and comprehensive logging system.',
+    images: [
       'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/1476321/pexels-photo-1476321.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
-    features:['4-Slot Medicine Storage','RTC Scheduling System','Web Dashboard Interface','Data Logging & Analytics','Improved Motor Control'],
-    tech:['Arduino Mega','L298N Motor Shield','RTC Module','ESP8266','HTML/CSS/JS']
+    features: ['4-Slot Medicine Storage', 'RTC Scheduling System', 'Web Dashboard Interface', 'Data Logging & Analytics', 'Improved Motor Control'],
+    tech: ['Arduino Mega', 'L298N Motor Shield', 'RTC Module', 'ESP8266', 'HTML/CSS/JS']
   },
-  'medicare-tracker':{
-    title:'Medi Care Tracker',
-    desc:'Web-based patient management system for tracking medication schedules, patient confirmations, and generating reports with mobile-responsive design.',
-    images:[
+  'medicare-tracker': {
+    title: 'Medi Care Tracker',
+    desc: 'Web-based patient management system for tracking medication schedules, patient confirmations, and generating reports with mobile-responsive design.',
+    images: [
       'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/3184317/pexels-photo-3184317.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
-    features:['Patient Schedule Management','Medication Tracking','Mobile-Responsive Design','Report Generation','Notification System'],
-    tech:['React.js','Node.js','MongoDB','Express.js','Bootstrap']
+    features: ['Patient Schedule Management', 'Medication Tracking', 'Mobile-Responsive Design', 'Report Generation', 'Notification System'],
+    tech: ['React.js', 'Node.js', 'MongoDB', 'Express.js', 'Bootstrap']
   },
-  'slic-2024-silver':{
-    title:'SLIC New Innovation — Silver Medal (2024)',
-    desc:'Award-winning innovation project at the All-Island School Inventors Competition. Comprehensive prototype development, technical presentation, and live demonstration.',
-    images:[
+  'slic-2024-silver': {
+    title: 'SLIC New Innovation — Silver Medal (2024)',
+    desc: 'Award-winning innovation project at the All-Island School Inventors Competition. Comprehensive prototype development, technical presentation, and live demonstration.',
+    images: [
       'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/8566473/pexels-photo-8566473.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1200',
       'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200'
     ],
-    features:['Innovation Prototype','Technical Presentation','Live Demonstration','Competition Success','Silver Medal Achievement'],
-    tech:['Arduino','Sensors','3D Printing','Presentation Skills','Project Management']
+    features: ['Innovation Prototype', 'Technical Presentation', 'Live Demonstration', 'Competition Success', 'Silver Medal Achievement'],
+    tech: ['Arduino', 'Sensors', '3D Printing', 'Presentation Skills', 'Project Management']
   }
 };
 
-function renderPage(key){
-  const p=projectPages[key];
-  if(!p){ pages.innerHTML=''; return; }
-  pages.innerHTML=`
+function renderPage(key) {
+  const project = projectPages[key];
+  if (!project) {
+    pages.innerHTML = '';
+    return;
+  }
+  
+  pages.innerHTML = `
     <div class="page active">
       <div class="projHeader">
         <a class="btn" href="#portfolio">← Back</a>
         <span class="chip">Project</span>
-        <h3 style="margin-left:auto">${p.title}</h3>
+        <h3 style="margin-left:auto">${project.title}</h3>
       </div>
-      <p class="subtitle">${p.desc}</p>
+      <p class="subtitle">${project.desc}</p>
       
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0">
         <div>
           <h4 style="color:var(--neon);margin-bottom:12px">Key Features</h4>
           <ul style="color:var(--muted);line-height:1.6">
-            ${p.features.map(f=>`<li style="margin-bottom:6px">• ${f}</li>`).join('')}
+            ${project.features.map(f => `<li style="margin-bottom:6px">• ${f}</li>`).join('')}
           </ul>
         </div>
         <div>
           <h4 style="color:var(--neon);margin-bottom:12px">Technologies Used</h4>
           <div style="display:flex;flex-wrap:wrap;gap:8px">
-            ${p.tech.map(t=>`<span class="tech-tag">${t}</span>`).join('')}
+            ${project.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
           </div>
         </div>
       </div>
       
       <div class="carousel" id="subCarousel">
-        <div class="track">${p.images.map(src=>`<div class='slide' style='background-image:url("${src}");background-size:cover;background-position:center'></div>`).join('')}</div>
+        <div class="track">${project.images.map(src => `<div class='slide' style='background-image:url("${src}");background-size:cover;background-position:center'></div>`).join('')}</div>
         <button class="carBtn carPrev"><i class="fas fa-chevron-left"></i></button>
         <button class="carBtn carNext"><i class="fas fa-chevron-right"></i></button>
       </div>
     </div>`;
+  
   bindCarousel('#subCarousel');
 }
 
-// Handle card clicks -> open page
-document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>{
-  const slug=c.getAttribute('data-goto');
-  if(slug) {
-    location.hash=`#project/${slug}`;
-    renderPage(slug);
-    window.scrollTo({top:document.getElementById('portfolio').offsetTop-70,behavior:'smooth'});
-  }
-}));
-
-// Hash router
-window.addEventListener('hashchange',()=>{
-  const h=location.hash;
-  if(h.startsWith('#project/')){ renderPage(h.split('/')[1]); }
-  else { pages.innerHTML=''; }
+// Handle card clicks -> open project details
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    const slug = card.getAttribute('data-goto');
+    if (slug) {
+      location.hash = `#project/${slug}`;
+      renderPage(slug);
+      window.scrollTo({
+        top: document.getElementById('portfolio').offsetTop - 70,
+        behavior: 'smooth'
+      });
+    }
+  });
 });
-if(location.hash.startsWith('#project/')){ renderPage(location.hash.split('/')[1]); }
+
+// Hash router for project pages
+window.addEventListener('hashchange', () => {
+  const hash = location.hash;
+  if (hash.startsWith('#project/')) {
+    renderPage(hash.split('/')[1]);
+  } else {
+    pages.innerHTML = '';
+  }
+});
+
+// Initialize project page if hash exists
+if (location.hash.startsWith('#project/')) {
+  renderPage(location.hash.split('/')[1]);
+}
 
 // ====== CAROUSEL (main + sub) + swipe/drag ======
-function bindCarousel(sel){
-  const root=document.querySelector(sel); if(!root) return;
-  const track=root.querySelector('.track');
-  const slides=[...track.children];
-  let idx=0, startX=0, curX=0, dragging=false;
-  function update(){ track.style.transform=`translateX(${-idx*100}%)`; }
-  const next=()=>{ idx=(idx+1)%slides.length; update(); }
-  const prev=()=>{ idx=(idx-1+slides.length)%slides.length; update(); }
-  root.querySelector('.carNext').onclick=next;
-  root.querySelector('.carPrev').onclick=prev;
-  // Drag
-  const onDown=e=>{ dragging=true; startX=(e.touches?e.touches[0].clientX:e.clientX); track.style.transition='none'; };
-  const onMove=e=>{ if(!dragging) return; curX=(e.touches?e.touches[0].clientX:e.clientX); const dx=curX-startX; track.style.transform=`translateX(${(-idx*100)+(dx/window.innerWidth)*100}%)`; };
-  const onUp=e=>{ if(!dragging) return; track.style.transition='transform .5s ease'; const dx=(curX-startX); if(Math.abs(dx)>80){ dx<0?next():prev(); } else update(); dragging=false; };
-  root.addEventListener('mousedown',onDown); window.addEventListener('mousemove',onMove); window.addEventListener('mouseup',onUp);
-  root.addEventListener('touchstart',onDown,{passive:true}); root.addEventListener('touchmove',onMove,{passive:true}); root.addEventListener('touchend',onUp);
+function bindCarousel(selector) {
+  const root = document.querySelector(selector);
+  if (!root) return;
+  
+  const track = root.querySelector('.track');
+  const slides = [...track.children];
+  let currentIndex = 0;
+  let startX = 0;
+  let currentX = 0;
+  let isDragging = false;
+  
+  function updateCarousel() {
+    track.style.transform = `translateX(${-currentIndex * 100}%)`;
+  }
+  
+  const nextSlide = () => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateCarousel();
+  };
+  
+  const prevSlide = () => {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateCarousel();
+  };
+  
+  // Button controls
+  const nextBtn = root.querySelector('.carNext');
+  const prevBtn = root.querySelector('.carPrev');
+  if (nextBtn) nextBtn.onclick = nextSlide;
+  if (prevBtn) prevBtn.onclick = prevSlide;
+  
+  // Drag functionality
+  const onStart = (e) => {
+    isDragging = true;
+    startX = e.touches ? e.touches[0].clientX : e.clientX;
+    track.style.transition = 'none';
+  };
+  
+  const onMove = (e) => {
+    if (!isDragging) return;
+    currentX = e.touches ? e.touches[0].clientX : e.clientX;
+    const deltaX = currentX - startX;
+    track.style.transform = `translateX(${(-currentIndex * 100) + (deltaX / window.innerWidth) * 100}%)`;
+  };
+  
+  const onEnd = () => {
+    if (!isDragging) return;
+    track.style.transition = 'transform 0.5s ease';
+    const deltaX = currentX - startX;
+    
+    if (Math.abs(deltaX) > 80) {
+      deltaX < 0 ? nextSlide() : prevSlide();
+    } else {
+      updateCarousel();
+    }
+    
+    isDragging = false;
+  };
+  
+  // Mouse events
+  root.addEventListener('mousedown', onStart);
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onEnd);
+  
+  // Touch events
+  root.addEventListener('touchstart', onStart, { passive: true });
+  root.addEventListener('touchmove', onMove, { passive: true });
+  root.addEventListener('touchend', onEnd);
+  
   // Auto-play
-  let timer=setInterval(next,4000); root.addEventListener('mouseenter',()=>clearInterval(timer)); root.addEventListener('mouseleave',()=>timer=setInterval(next,4000));
-  update();
+  let autoPlayTimer = setInterval(nextSlide, 4000);
+  root.addEventListener('mouseenter', () => clearInterval(autoPlayTimer));
+  root.addEventListener('mouseleave', () => autoPlayTimer = setInterval(nextSlide, 4000));
+  
+  updateCarousel();
 }
+
+// Initialize main carousel
 bindCarousel('#mainCarousel');
 
 // ====== SKILL TABS ======
@@ -166,25 +261,48 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     
     // Add active class to clicked tab and corresponding panel
     btn.classList.add('active');
-    document.getElementById(targetTab).classList.add('active');
+    const panel = document.getElementById(targetTab);
+    if (panel) panel.classList.add('active');
   });
 });
 
 // ====== TECH BACKGROUND CANVAS (moving nodes + links) ======
-const canvas=document.getElementById('bgCanvas');
-const ctx=canvas.getContext('2d');
-let W,H; const nodes=[]; const N=70; const mouse={x:-999,y:-999};
-function resize(){ W=canvas.width=innerWidth; H=canvas.height=innerHeight; }
-addEventListener('resize',resize); resize();
-for(let i=0;i<N;i++) nodes.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*0.6,vy:(Math.random()-.5)*0.6});
-canvas.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let canvasWidth, canvasHeight;
+const nodes = [];
+const nodeCount = 70;
+const mouse = { x: -999, y: -999 };
+
+function resizeCanvas() {
+  canvasWidth = canvas.width = window.innerWidth;
+  canvasHeight = canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// Initialize nodes
+for (let i = 0; i < nodeCount; i++) {
+  nodes.push({
+    x: Math.random() * canvasWidth,
+    y: Math.random() * canvasHeight,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: (Math.random() - 0.5) * 0.6
+  });
+}
+
+canvas.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
 
 // Enhanced particle system
 const particles = [];
-for(let i=0;i<20;i++) {
+for (let i = 0; i < 20; i++) {
   particles.push({
-    x: Math.random() * innerWidth,
-    y: Math.random() * innerHeight,
+    x: Math.random() * canvasWidth,
+    y: Math.random() * canvasHeight,
     vx: (Math.random() - 0.5) * 0.3,
     vy: (Math.random() - 0.5) * 0.3,
     size: Math.random() * 2 + 1,
@@ -192,22 +310,28 @@ for(let i=0;i<20;i++) {
   });
 }
 
-function tick(){
-  ctx.clearRect(0,0,W,H);
+function animateCanvas() {
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
   
   // Draw main nodes
-  for(const p of nodes){
-    p.x+=p.vx; p.y+=p.vy;
-    if(p.x<0||p.x>W) p.vx*=-1; if(p.y<0||p.y>H) p.vy*=-1;
-    ctx.fillStyle='rgba(0,229,255,.8)'; ctx.fillRect(p.x,p.y,2,2);
+  for (const node of nodes) {
+    node.x += node.vx;
+    node.y += node.vy;
+    
+    if (node.x < 0 || node.x > canvasWidth) node.vx *= -1;
+    if (node.y < 0 || node.y > canvasHeight) node.vy *= -1;
+    
+    ctx.fillStyle = 'rgba(0,229,255,0.8)';
+    ctx.fillRect(node.x, node.y, 2, 2);
   }
   
   // Draw floating particles
-  for(const particle of particles) {
+  for (const particle of particles) {
     particle.x += particle.vx;
     particle.y += particle.vy;
-    if(particle.x < 0 || particle.x > W) particle.vx *= -1;
-    if(particle.y < 0 || particle.y > H) particle.vy *= -1;
+    
+    if (particle.x < 0 || particle.x > canvasWidth) particle.vx *= -1;
+    if (particle.y < 0 || particle.y > canvasHeight) particle.vy *= -1;
     
     ctx.fillStyle = `rgba(0,229,255,${particle.opacity})`;
     ctx.beginPath();
@@ -216,21 +340,29 @@ function tick(){
   }
   
   // Draw connection lines
-  for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){
-    const a=nodes[i], b=nodes[j];
-    const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
-    if(d<120){ 
-      ctx.strokeStyle=`rgba(0,229,255,${(1-d/120)*0.6})`; 
-      ctx.lineWidth=0.8; 
-      ctx.beginPath(); 
-      ctx.moveTo(a.x,a.y); 
-      ctx.lineTo(b.x,b.y); 
-      ctx.stroke(); 
+  for (let i = 0; i < nodeCount; i++) {
+    for (let j = i + 1; j < nodeCount; j++) {
+      const nodeA = nodes[i];
+      const nodeB = nodes[j];
+      const dx = nodeA.x - nodeB.x;
+      const dy = nodeA.y - nodeB.y;
+      const distance = Math.hypot(dx, dy);
+      
+      if (distance < 120) {
+        ctx.strokeStyle = `rgba(0,229,255,${(1 - distance / 120) * 0.6})`;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(nodeA.x, nodeA.y);
+        ctx.lineTo(nodeB.x, nodeB.y);
+        ctx.stroke();
+      }
     }
   }
-  requestAnimationFrame(tick);
+  
+  requestAnimationFrame(animateCanvas);
 }
-tick();
+
+animateCanvas();
 
 // ====== SUN & MOON DYNAMIC BACKGROUND ======
 function initDynamicSky() {
@@ -323,12 +455,12 @@ function initDynamicSky() {
 initDynamicSky();
 
 // ====== CUSTOM CURSOR (dot + ring + magnetic hover) ======
-const dot=document.getElementById('cursorDot');
-const ring=document.getElementById('cursorRing');
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
 let mouseX = 0, mouseY = 0;
 let cursorX = 0, cursorY = 0;
 
-window.addEventListener('mousemove',e=>{
+window.addEventListener('mousemove', e => {
   mouseX = e.clientX;
   mouseY = e.clientY;
 });
@@ -345,11 +477,17 @@ function animateCursor() {
   
   requestAnimationFrame(animateCursor);
 }
+
 animateCursor();
 
-document.querySelectorAll('.btn,.card,.socials a').forEach(el=>{
-  el.addEventListener('mouseenter',()=>ring.style.transform='translate(-50%,-50%) scale(1.6)');
-  el.addEventListener('mouseleave',()=>ring.style.transform='translate(-50%,-50%) scale(1)');
+// Magnetic hover effects
+document.querySelectorAll('.btn, .card, .socials a').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.transform = 'translate(-50%, -50%) scale(1.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.transform = 'translate(-50%, -50%) scale(1)';
+  });
 });
 
 // ====== PHOTO MOUSE REFLECTION EFFECT ======
@@ -405,57 +543,11 @@ function createMatrixRain() {
   
   setInterval(createChar, 100);
 }
+
 createMatrixRain();
 
 // ====== PARTICLE TRAIL CURSOR ======
 const particleTrail = document.getElementById('particleTrail');
-let trailParticles = [];
-
-function createParticle(x, y) {
-  const particle = document.createElement('div');
-  particle.className = 'particle';
-  particle.style.left = x + 'px';
-  particle.style.top = y + 'px';
-  particleTrail.appendChild(particle);
-  
-  setTimeout(() => {
-    if (particle.parentNode) particle.parentNode.removeChild(particle);
-  }, 1000);
-}
-
-let lastParticleTime = 0;
-window.addEventListener('mousemove', (e) => {
-  const now = Date.now();
-  if (now - lastParticleTime > 50) { // Throttle particle creation
-    createParticle(e.clientX, e.clientY);
-    lastParticleTime = now;
-  }
-});
-
-// ====== 3D TILT EFFECT ======
-document.querySelectorAll('.tilt-card, .photoFrame').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
-    
-    card.style.setProperty('--rotateX', rotateX + 'deg');
-    card.style.setProperty('--rotateY', rotateY + 'deg');
-  });
-  
-  card.addEventListener('mouseleave', () => {
-    card.style.setProperty('--rotateX', '0deg');
-    card.style.setProperty('--rotateY', '0deg');
-  });
-});
-
-const particleTrail = document.getElementById('particleTrail');
-let trailParticles = [];
 
 function createParticle(x, y) {
   const particle = document.createElement('div');
@@ -632,9 +724,10 @@ setInterval(() => {
     setTimeout(() => chatbotToggle.classList.remove('pulse'), 2000);
   }
 }, 15000);
+
 // ====== CONTACT FORM WITH EMAILJS ======
 // Initialize EmailJS (you'll need to replace with your actual keys)
-emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+// emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
 
 const contactForm = document.getElementById('contactForm');
 contactForm.addEventListener('submit', (e) => {
@@ -647,15 +740,19 @@ contactForm.addEventListener('submit', (e) => {
     message: document.getElementById('message').value
   };
   
+  // For demo purposes, show success message
+  alert('Message sent successfully! 🎉\n\nNote: To enable actual email sending, configure EmailJS with your credentials.');
+  contactForm.reset();
+  
   // Replace with your EmailJS service ID and template ID
-  emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData)
-    .then(() => {
-      alert('Message sent successfully! 🎉');
-      contactForm.reset();
-    })
-    .catch(() => {
-      alert('Failed to send message. Please try again or contact directly via email/WhatsApp.');
-    });
+  // emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData)
+  //   .then(() => {
+  //     alert('Message sent successfully! 🎉');
+  //     contactForm.reset();
+  //   })
+  //   .catch(() => {
+  //     alert('Failed to send message. Please try again or contact directly via email/WhatsApp.');
+  //   });
 });
 
 // ====== PDF DOWNLOAD ======
@@ -693,155 +790,3 @@ document.getElementById('downloadPDF').addEventListener('click', (e) => {
   
   doc.save('Thenura_Sathmira_Portfolio.pdf');
 });
-
-// ====== SUN & MOON DYNAMIC BACKGROUND ======
-function initDynamicSky() {
-  const sky = document.getElementById('dynamicSky');
-  const skyGradient = document.getElementById('skyGradient');
-  const sun = document.getElementById('sun');
-  const moon = document.getElementById('moon');
-  const stars = document.getElementById('stars');
-  const clouds = document.getElementById('clouds');
-  
-  // Create stars
-  for (let i = 0; i < 50; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.left = Math.random() * 100 + '%';
-    star.style.top = Math.random() * 100 + '%';
-    star.style.animationDelay = Math.random() * 3 + 's';
-    stars.appendChild(star);
-  }
-  
-  function updateSky() {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const timeInMinutes = hours * 60 + minutes;
-    
-    // Calculate sun and moon positions (0-100% across screen)
-    const sunProgress = Math.max(0, Math.min(100, ((timeInMinutes - 360) / 720) * 100)); // 6AM to 6PM
-    const moonProgress = timeInMinutes < 360 ? 
-      ((timeInMinutes + 720) / 720) * 100 : // Night time (before 6AM)
-      ((timeInMinutes - 1080) / 720) * 100; // Night time (after 6PM)
-    
-    // Position celestial bodies
-    const sunY = 20 + Math.sin((sunProgress / 100) * Math.PI) * -10; // Arc motion
-    const moonY = 15 + Math.sin((moonProgress / 100) * Math.PI) * -10;
-    
-    sun.style.left = sunProgress + '%';
-    sun.style.top = sunY + '%';
-    moon.style.left = moonProgress + '%';
-    moon.style.top = moonY + '%';
-    
-    // Sky themes based on time
-    let skyClass = '';
-    let sunOpacity = 0;
-    let moonOpacity = 0;
-    let starsOpacity = 0;
-    let cloudsOpacity = 0;
-    
-    if (hours >= 5 && hours < 7) { // Dawn
-      skyClass = 'sky-dawn';
-      sunOpacity = 0.8;
-      cloudsOpacity = 0.3;
-    } else if (hours >= 7 && hours < 10) { // Morning
-      skyClass = 'sky-morning';
-      sunOpacity = 1;
-      cloudsOpacity = 0.5;
-    } else if (hours >= 10 && hours < 15) { // Noon
-      skyClass = 'sky-noon';
-      sunOpacity = 1;
-      cloudsOpacity = 0.7;
-    } else if (hours >= 15 && hours < 18) { // Afternoon
-      skyClass = 'sky-afternoon';
-      sunOpacity = 0.9;
-      cloudsOpacity = 0.4;
-    } else if (hours >= 18 && hours < 20) { // Evening
-      skyClass = 'sky-evening';
-      sunOpacity = 0.5;
-      moonOpacity = 0.3;
-      starsOpacity = 0.3;
-    } else { // Night
-      skyClass = 'sky-night';
-      moonOpacity = 1;
-      starsOpacity = 1;
-    }
-    
-    // Apply styles
-    skyGradient.className = `sky-gradient ${skyClass}`;
-    sun.style.opacity = sunOpacity;
-    moon.style.opacity = moonOpacity;
-    stars.style.opacity = starsOpacity;
-    clouds.style.opacity = cloudsOpacity;
-  }
-  
-  // Update immediately and then every minute
-  updateSky();
-  setInterval(updateSky, 60000);
-}
-
-// Initialize dynamic sky
-initDynamicSky();
-
-// ====== CUSTOM CURSOR (dot + ring + magnetic hover) ======
-const dot=document.getElementById('cursorDot');
-const ring=document.getElementById('cursorRing');
-let mouseX = 0, mouseY = 0;
-let cursorX = 0, cursorY = 0;
-
-window.addEventListener('mousemove',e=>{
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-// Smooth cursor animation
-function animateCursor() {
-  cursorX += (mouseX - cursorX) * 0.1;
-  cursorY += (mouseY - cursorY) * 0.1;
-  
-  dot.style.left = cursorX + 'px';
-  dot.style.top = cursorY + 'px';
-  ring.style.left = cursorX + 'px';
-  ring.style.top = cursorY + 'px';
-  
-  requestAnimationFrame(animateCursor);
-}
-animateCursor();
-
-document.querySelectorAll('.btn,.card,.socials a').forEach(el=>{
-  el.addEventListener('mouseenter',()=>ring.style.transform='translate(-50%,-50%) scale(1.6)');
-  el.addEventListener('mouseleave',()=>ring.style.transform='translate(-50%,-50%) scale(1)');
-});
-
-// ====== PHOTO MOUSE REFLECTION EFFECT ======
-const photoFrame = document.querySelector('.photoFrame');
-const reflectionOverlay = document.querySelector('.reflectionOverlay');
-
-if (photoFrame && reflectionOverlay) {
-  photoFrame.addEventListener('mousemove', (e) => {
-    const rect = photoFrame.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = (y - centerY) / 8;
-    const rotateY = (centerX - x) / 8;
-    
-    photoFrame.style.setProperty('--rotateX', rotateX + 'deg');
-    photoFrame.style.setProperty('--rotateY', rotateY + 'deg');
-    
-    const gradientX = (x / rect.width) * 100;
-    const gradientY = (y / rect.height) * 100;
-    reflectionOverlay.style.background = `radial-gradient(circle at ${gradientX}% ${gradientY}%, rgba(255,255,255,0.6) 0%, rgba(0,229,255,0.3) 30%, transparent 60%)`;
-    reflectionOverlay.style.transform = `translateZ(10px)`;
-  });
-  
-  photoFrame.addEventListener('mouseleave', () => {
-    photoFrame.style.setProperty('--rotateX', '0deg');
-    photoFrame.style.setProperty('--rotateY', '0deg');
-    reflectionOverlay.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 30%, transparent 70%, rgba(0,229,255,0.1) 100%)';
-    reflectionOverlay.style.transform = 'translateZ(0px)';
-  });
-}
