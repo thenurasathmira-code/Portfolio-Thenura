@@ -1,11 +1,11 @@
 :root {
-  --bg: #0a0a0a;          /* darker background */
-  --panel: #111111;       /* card bg */
-  --text: #e6f1ff;        /* primary text */
-  --muted: #94a3b8;       /* secondary text */
-  --neon: #00e5ff;        /* cyan neon */
-  --accent: #10b981;      /* green accent */
-  --danger: #ff6a00;      /* fire ring hue */
+  --bg: #000000;          /* Pure black background */
+  --panel: #0a0a0a;       /* Very dark panels */
+  --text: #e6f1ff;        /* Primary text */
+  --muted: #94a3b8;       /* Secondary text */
+  --neon: #00e5ff;        /* Cyan neon */
+  --accent: #10b981;      /* Green accent */
+  --danger: #ff6a00;      /* Fire ring hue */
 }
 
 /* Light Theme Variables */
@@ -127,120 +127,6 @@ body {
   }
 }
 
-/* === SUN & MOON DYNAMIC BACKGROUND === */
-.dynamic-sky {
-  position: fixed;
-  inset: 0;
-  z-index: -4;
-  overflow: hidden;
-  transition: all 2s ease;
-}
-
-.sky-gradient {
-  position: absolute;
-  inset: 0;
-  transition: all 2s ease;
-}
-
-.sun {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, #ffeb3b 0%, #ff9800 70%, #ff5722 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 50px #ffeb3b, 0 0 100px #ff9800;
-  transition: all 2s ease;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-}
-
-.moon {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  background: radial-gradient(circle, #f5f5f5 0%, #e0e0e0 70%, #bdbdbd 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 30px #f5f5f5, 0 0 60px #e0e0e0;
-  transition: all 2s ease;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-}
-
-.stars {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 2s ease;
-}
-
-.star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: #fff;
-  border-radius: 50%;
-  animation: twinkle 3s infinite ease-in-out;
-}
-
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
-.clouds {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 2s ease;
-}
-
-.cloud {
-  position: absolute;
-  background: rgba(255,255,255,0.1);
-  border-radius: 50px;
-  animation: cloudFloat 20s infinite linear;
-}
-
-@keyframes cloudFloat {
-  0% {
-    transform: translateX(-100px);
-  }
-  100% {
-    transform: translateX(calc(100vw + 100px));
-  }
-}
-
-/* Sky color themes */
-.sky-dawn {
-  background: linear-gradient(to bottom, #ff6b6b 0%, #ffa726 50%, #ffcc02 100%);
-}
-
-.sky-morning {
-  background: linear-gradient(to bottom, #42a5f5 0%, #66bb6a 50%, #ffee58 100%);
-}
-
-.sky-noon {
-  background: linear-gradient(to bottom, #1976d2 0%, #42a5f5 100%);
-}
-
-.sky-afternoon {
-  background: linear-gradient(to bottom, #ff7043 0%, #ffab40 50%, #ffee58 100%);
-}
-
-.sky-evening {
-  background: linear-gradient(to bottom, #3f51b5 0%, #7986cb 50%, #ff7043 100%);
-}
-
-.sky-night {
-  background: linear-gradient(to bottom, #0d47a1 0%, #1565c0 50%, #1976d2 100%);
-}
-
 /* === CUSTOM CURSOR === */
 #cursorDot {
   position: fixed;
@@ -275,10 +161,6 @@ body {
   z-index: 10000;
   transform: translate(-50%, -50%);
   transition: all 0.1s ease;
-  opacity: 0;
-}
-
-.dragon-cursor.active {
   opacity: 1;
 }
 
@@ -328,7 +210,7 @@ header {
   left: 0;
   right: 0;
   z-index: 50;
-  background: linear-gradient(180deg, rgba(15,20,36,.9), rgba(15,20,36,.6), transparent);
+  background: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.6), transparent);
   backdrop-filter: blur(6px);
 }
 
@@ -627,7 +509,7 @@ main {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, rgba(0,229,255,0.2) 30%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(0,229,255,0.2) 30%, transparent 60%);
   opacity: 1;
   transition: all 0.1s ease;
   pointer-events: none;

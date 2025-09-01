@@ -31,7 +31,9 @@ function typeLoop() {
 }
 
 // Start typewriter effect
-typeLoop();
+document.addEventListener('DOMContentLoaded', () => {
+  typeLoop();
+});
 
 // ====== PROJECT ROUTER for expandable project pages ======
 const pages = document.getElementById('pages');
@@ -139,36 +141,6 @@ function renderPage(key) {
   bindCarousel('#subCarousel');
 }
 
-// Handle card clicks -> open project details
-document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('click', () => {
-    const slug = card.getAttribute('data-goto');
-    if (slug) {
-      location.hash = `#project/${slug}`;
-      renderPage(slug);
-      window.scrollTo({
-        top: document.getElementById('portfolio').offsetTop - 70,
-        behavior: 'smooth'
-      });
-    }
-  });
-});
-
-// Hash router for project pages
-window.addEventListener('hashchange', () => {
-  const hash = location.hash;
-  if (hash.startsWith('#project/')) {
-    renderPage(hash.split('/')[1]);
-  } else {
-    pages.innerHTML = '';
-  }
-});
-
-// Initialize project page if hash exists
-if (location.hash.startsWith('#project/')) {
-  renderPage(location.hash.split('/')[1]);
-}
-
 // ====== CAROUSEL (main + sub) + swipe/drag ======
 function bindCarousel(selector) {
   const root = document.querySelector(selector);
@@ -247,24 +219,56 @@ function bindCarousel(selector) {
   updateCarousel();
 }
 
-// Initialize main carousel
-bindCarousel('#mainCarousel');
-
 // ====== SKILL TABS ======
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const targetTab = btn.getAttribute('data-tab');
-    
-    // Remove active class from all tabs and panels
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.skill-panel').forEach(p => p.classList.remove('active'));
-    
-    // Add active class to clicked tab and corresponding panel
-    btn.classList.add('active');
-    const panel = document.getElementById(targetTab);
-    if (panel) panel.classList.add('active');
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      // Remove active class from all tabs and panels
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.skill-panel').forEach(p => p.classList.remove('active'));
+      
+      // Add active class to clicked tab and corresponding panel
+      btn.classList.add('active');
+      const panel = document.getElementById(targetTab);
+      if (panel) panel.classList.add('active');
+    });
   });
+
+  // Handle card clicks -> open project details
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const slug = card.getAttribute('data-goto');
+      if (slug) {
+        location.hash = `#project/${slug}`;
+        renderPage(slug);
+        window.scrollTo({
+          top: document.getElementById('portfolio').offsetTop - 70,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // Initialize main carousel
+  bindCarousel('#mainCarousel');
 });
+
+// Hash router for project pages
+window.addEventListener('hashchange', () => {
+  const hash = location.hash;
+  if (hash.startsWith('#project/')) {
+    renderPage(hash.split('/')[1]);
+  } else {
+    pages.innerHTML = '';
+  }
+});
+
+// Initialize project page if hash exists
+if (location.hash.startsWith('#project/')) {
+  renderPage(location.hash.split('/')[1]);
+}
 
 // ====== TECH BACKGROUND CANVAS (moving nodes + links) ======
 const canvas = document.getElementById('bgCanvas');
@@ -364,96 +368,6 @@ function animateCanvas() {
 
 animateCanvas();
 
-// ====== SUN & MOON DYNAMIC BACKGROUND ======
-function initDynamicSky() {
-  const sky = document.getElementById('dynamicSky');
-  const skyGradient = document.getElementById('skyGradient');
-  const sun = document.getElementById('sun');
-  const moon = document.getElementById('moon');
-  const stars = document.getElementById('stars');
-  const clouds = document.getElementById('clouds');
-  
-  // Create stars
-  for (let i = 0; i < 50; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.left = Math.random() * 100 + '%';
-    star.style.top = Math.random() * 100 + '%';
-    star.style.animationDelay = Math.random() * 3 + 's';
-    stars.appendChild(star);
-  }
-  
-  function updateSky() {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const timeInMinutes = hours * 60 + minutes;
-    
-    // Calculate sun and moon positions (0-100% across screen)
-    const sunProgress = Math.max(0, Math.min(100, ((timeInMinutes - 360) / 720) * 100)); // 6AM to 6PM
-    const moonProgress = timeInMinutes < 360 ? 
-      ((timeInMinutes + 720) / 720) * 100 : // Night time (before 6AM)
-      ((timeInMinutes - 1080) / 720) * 100; // Night time (after 6PM)
-    
-    // Position celestial bodies
-    const sunY = 20 + Math.sin((sunProgress / 100) * Math.PI) * -10; // Arc motion
-    const moonY = 15 + Math.sin((moonProgress / 100) * Math.PI) * -10;
-    
-    sun.style.left = sunProgress + '%';
-    sun.style.top = sunY + '%';
-    moon.style.left = moonProgress + '%';
-    moon.style.top = moonY + '%';
-    
-    // Sky themes based on time
-    let skyClass = '';
-    let sunOpacity = 0;
-    let moonOpacity = 0;
-    let starsOpacity = 0;
-    let cloudsOpacity = 0;
-    
-    if (hours >= 5 && hours < 7) { // Dawn
-      skyClass = 'sky-dawn';
-      sunOpacity = 0.8;
-      cloudsOpacity = 0.3;
-    } else if (hours >= 7 && hours < 10) { // Morning
-      skyClass = 'sky-morning';
-      sunOpacity = 1;
-      cloudsOpacity = 0.5;
-    } else if (hours >= 10 && hours < 15) { // Noon
-      skyClass = 'sky-noon';
-      sunOpacity = 1;
-      cloudsOpacity = 0.7;
-    } else if (hours >= 15 && hours < 18) { // Afternoon
-      skyClass = 'sky-afternoon';
-      sunOpacity = 0.9;
-      cloudsOpacity = 0.4;
-    } else if (hours >= 18 && hours < 20) { // Evening
-      skyClass = 'sky-evening';
-      sunOpacity = 0.5;
-      moonOpacity = 0.3;
-      starsOpacity = 0.3;
-    } else { // Night
-      skyClass = 'sky-night';
-      moonOpacity = 1;
-      starsOpacity = 1;
-    }
-    
-    // Apply styles
-    skyGradient.className = `sky-gradient ${skyClass}`;
-    sun.style.opacity = sunOpacity;
-    moon.style.opacity = moonOpacity;
-    stars.style.opacity = starsOpacity;
-    clouds.style.opacity = cloudsOpacity;
-  }
-  
-  // Update immediately and then every minute
-  updateSky();
-  setInterval(updateSky, 60000);
-}
-
-// Initialize dynamic sky
-initDynamicSky();
-
 // ====== CUSTOM CURSOR (dot + ring + magnetic hover) ======
 const dot = document.getElementById('cursorDot');
 const ring = document.getElementById('cursorRing');
@@ -481,44 +395,48 @@ function animateCursor() {
 animateCursor();
 
 // Magnetic hover effects
-document.querySelectorAll('.btn, .card, .socials a').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    ring.style.transform = 'translate(-50%, -50%) scale(1.6)';
-  });
-  el.addEventListener('mouseleave', () => {
-    ring.style.transform = 'translate(-50%, -50%) scale(1)';
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.btn, .card, .socials a').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.transform = 'translate(-50%, -50%) scale(1.6)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
   });
 });
 
 // ====== PHOTO MOUSE REFLECTION EFFECT ======
-const photoFrame = document.querySelector('.photoFrame');
-const reflectionOverlay = document.querySelector('.reflectionOverlay');
+document.addEventListener('DOMContentLoaded', () => {
+  const photoFrame = document.querySelector('.photoFrame');
+  const reflectionOverlay = document.querySelector('.reflectionOverlay');
 
-if (photoFrame && reflectionOverlay) {
-  photoFrame.addEventListener('mousemove', (e) => {
-    const rect = photoFrame.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+  if (photoFrame && reflectionOverlay) {
+    photoFrame.addEventListener('mousemove', (e) => {
+      const rect = photoFrame.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 8;
+      const rotateY = (centerX - x) / 8;
+      
+      photoFrame.style.setProperty('--rotateX', rotateX + 'deg');
+      photoFrame.style.setProperty('--rotateY', rotateY + 'deg');
+      
+      const gradientX = (x / rect.width) * 100;
+      const gradientY = (y / rect.height) * 100;
+      reflectionOverlay.style.background = `radial-gradient(circle at ${gradientX}% ${gradientY}%, rgba(255,255,255,0.5) 0%, rgba(0,229,255,0.4) 25%, rgba(0,229,255,0.1) 50%, transparent 70%)`;
+    });
     
-    const rotateX = (y - centerY) / 8;
-    const rotateY = (centerX - x) / 8;
-    
-    photoFrame.style.setProperty('--rotateX', rotateX + 'deg');
-    photoFrame.style.setProperty('--rotateY', rotateY + 'deg');
-    
-    const gradientX = (x / rect.width) * 100;
-    const gradientY = (y / rect.height) * 100;
-    reflectionOverlay.style.background = `radial-gradient(circle at ${gradientX}% ${gradientY}%, rgba(255,255,255,0.5) 0%, rgba(0,229,255,0.4) 25%, rgba(0,229,255,0.1) 50%, transparent 70%)`;
-  });
-  
-  photoFrame.addEventListener('mouseleave', () => {
-    photoFrame.style.setProperty('--rotateX', '0deg');
-    photoFrame.style.setProperty('--rotateY', '0deg');
-    reflectionOverlay.style.background = 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(0,229,255,0.2) 30%, transparent 60%)';
-  });
-}
+    photoFrame.addEventListener('mouseleave', () => {
+      photoFrame.style.setProperty('--rotateX', '0deg');
+      photoFrame.style.setProperty('--rotateY', '0deg');
+      reflectionOverlay.style.background = 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(0,229,255,0.2) 30%, transparent 60%)';
+    });
+  }
+});
 
 // ====== MATRIX CODE BACKGROUND ======
 function createMatrixRain() {
@@ -569,300 +487,262 @@ window.addEventListener('mousemove', (e) => {
 });
 
 // ====== 3D TILT EFFECT ======
-document.querySelectorAll('.tilt-card, .photoFrame').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tilt-card, .photoFrame').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 10;
+      const rotateY = (centerX - x) / 10;
+      
+      card.style.setProperty('--rotateX', rotateX + 'deg');
+      card.style.setProperty('--rotateY', rotateY + 'deg');
+    });
     
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
-    
-    card.style.setProperty('--rotateX', rotateX + 'deg');
-    card.style.setProperty('--rotateY', rotateY + 'deg');
-  });
-  
-  card.addEventListener('mouseleave', () => {
-    card.style.setProperty('--rotateX', '0deg');
-    card.style.setProperty('--rotateY', '0deg');
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--rotateX', '0deg');
+      card.style.setProperty('--rotateY', '0deg');
+    });
   });
 });
 
 // ====== DARK/LIGHT MODE TOGGLE ======
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
-const body = document.body;
+document.addEventListener('DOMContentLoaded', () => {
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const body = document.body;
 
-// Check for saved theme or default to dark
-const currentTheme = localStorage.getItem('theme') || 'dark';
-body.setAttribute('data-theme', currentTheme);
-updateThemeIcon(currentTheme);
+  // Check for saved theme or default to dark
+  const currentTheme = localStorage.getItem('theme') || 'dark';
+  body.setAttribute('data-theme', currentTheme);
+  updateThemeIcon(currentTheme);
 
-themeToggle.addEventListener('click', () => {
-  const currentTheme = body.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  
-  body.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-  updateThemeIcon(newTheme);
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    body.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+  });
+
+  function updateThemeIcon(theme) {
+    themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  }
 });
-
-function updateThemeIcon(theme) {
-  themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-}
 
 // ====== PRO MODE TOGGLE ======
-const proToggle = document.getElementById('proToggle');
-const body = document.body;
-let isProMode = false;
-let dragonCursor = null;
-let dragonTrailInterval = null;
+document.addEventListener('DOMContentLoaded', () => {
+  const proToggle = document.getElementById('proToggle');
+  const body = document.body;
+  let isProMode = false;
+  let dragonCursor = null;
+  let dragonTrailInterval = null;
 
-proToggle.addEventListener('click', () => {
-  isProMode = !isProMode;
-  
-  if (isProMode) {
-    // Activate Pro Mode
-    body.classList.add('pro-mode');
-    proToggle.classList.add('active');
+  proToggle.addEventListener('click', () => {
+    isProMode = !isProMode;
     
-    // Hide default cursor
-    document.getElementById('cursorDot').style.display = 'none';
-    document.getElementById('cursorRing').style.display = 'none';
-    
-    // Create dragon cursor
-    dragonCursor = document.createElement('div');
-    dragonCursor.className = 'dragon-cursor';
-    dragonCursor.id = 'dragonCursor';
-    document.body.appendChild(dragonCursor);
-    
-    // Dragon trail effect
-    dragonTrailInterval = setInterval(() => {
-      if (mouseX > 0 && mouseY > 0) {
-        const trail = document.createElement('div');
-        trail.className = 'dragon-trail';
-        trail.style.left = mouseX + 'px';
-        trail.style.top = mouseY + 'px';
-        document.body.appendChild(trail);
-        
-        setTimeout(() => {
-          if (trail.parentNode) trail.parentNode.removeChild(trail);
-        }, 800);
+    if (isProMode) {
+      // Activate Pro Mode
+      body.classList.add('pro-mode');
+      proToggle.classList.add('active');
+      
+      // Hide default cursor
+      document.getElementById('cursorDot').style.display = 'none';
+      document.getElementById('cursorRing').style.display = 'none';
+      
+      // Create dragon cursor
+      dragonCursor = document.createElement('div');
+      dragonCursor.className = 'dragon-cursor';
+      dragonCursor.id = 'dragonCursor';
+      document.body.appendChild(dragonCursor);
+      
+      // Dragon trail effect
+      dragonTrailInterval = setInterval(() => {
+        if (mouseX > 0 && mouseY > 0) {
+          const trail = document.createElement('div');
+          trail.className = 'dragon-trail';
+          trail.style.left = mouseX + 'px';
+          trail.style.top = mouseY + 'px';
+          document.body.appendChild(trail);
+          
+          setTimeout(() => {
+            if (trail.parentNode) trail.parentNode.removeChild(trail);
+          }, 800);
+        }
+      }, 50);
+      
+    } else {
+      // Deactivate Pro Mode
+      body.classList.remove('pro-mode');
+      proToggle.classList.remove('active');
+      
+      // Show default cursor
+      document.getElementById('cursorDot').style.display = 'block';
+      document.getElementById('cursorRing').style.display = 'block';
+      
+      // Remove dragon cursor
+      if (dragonCursor) {
+        dragonCursor.remove();
+        dragonCursor = null;
       }
-    }, 50);
-    
-  } else {
-    // Deactivate Pro Mode
-    body.classList.remove('pro-mode');
-    proToggle.classList.remove('active');
-    
-    // Show default cursor
-    document.getElementById('cursorDot').style.display = 'block';
-    document.getElementById('cursorRing').style.display = 'block';
-    
-    // Remove dragon cursor
-    if (dragonCursor) {
-      dragonCursor.remove();
-      dragonCursor = null;
+      
+      // Clear dragon trail
+      if (dragonTrailInterval) {
+        clearInterval(dragonTrailInterval);
+        dragonTrailInterval = null;
+      }
+      
+      // Remove existing trails
+      document.querySelectorAll('.dragon-trail').forEach(trail => trail.remove());
     }
-    
-    // Clear dragon trail
-    if (dragonTrailInterval) {
-      clearInterval(dragonTrailInterval);
-      dragonTrailInterval = null;
+  });
+
+  // Update dragon cursor position
+  function updateDragonCursor() {
+    if (dragonCursor && isProMode) {
+      dragonCursor.style.left = mouseX + 'px';
+      dragonCursor.style.top = mouseY + 'px';
     }
-    
-    // Remove existing trails
-    document.querySelectorAll('.dragon-trail').forEach(trail => trail.remove());
+    requestAnimationFrame(updateDragonCursor);
   }
+
+  updateDragonCursor();
 });
 
-// Update dragon cursor position
-function updateDragonCursor() {
-  if (dragonCursor && isProMode) {
-    dragonCursor.style.left = mouseX + 'px';
-    dragonCursor.style.top = mouseY + 'px';
-  }
-  requestAnimationFrame(updateDragonCursor);
-}
-
-updateDragonCursor();
 // ====== LIVE CHATBOT ======
-const chatbot = document.getElementById('chatbot');
-const chatbotToggle = document.getElementById('chatbotToggle');
-const chatbotClose = document.getElementById('chatbotClose');
-const chatInput = document.getElementById('chatInput');
-const chatSend = document.getElementById('chatSend');
-const chatMessages = document.getElementById('chatbotMessages');
+document.addEventListener('DOMContentLoaded', () => {
+  const chatbot = document.getElementById('chatbot');
+  const chatbotToggle = document.getElementById('chatbotToggle');
+  const chatbotClose = document.getElementById('chatbotClose');
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+  const chatMessages = document.getElementById('chatbotMessages');
 
-// Enhanced AI responses with more personality and detail
-const botResponses = {
-  'who are you': "I'm Thenura Sathmira! 🚀 A passionate innovator and developer from Sri Lanka. I specialize in creating cutting-edge IoT solutions, stunning web applications, and professional video content. I recently won a Silver Medal at SLIC 2024 for my innovative projects!\n\n💡 Try activating PRO MODE for an enhanced experience!",
-  'projects': "🎯 Here are my featured projects:\n\n🏥 **Medicine Reminder Systems** - IoT healthcare solutions with face recognition\n🎬 **Professional Video Editing** - Award-winning content creation\n🏆 **SLIC 2024 Winner** - Silver medal innovation\n💻 **Web Applications** - Modern, responsive solutions\n\nWhich project interests you most?",
-  'skills': "💪 **My Technical Arsenal:**\n\n🌐 **Frontend:** React.js, HTML5, CSS3, JavaScript\n🔧 **Hardware:** Arduino, ESP32, Raspberry Pi\n🎨 **Design:** UI/UX, Video Editing, Graphics\n🤖 **AI/ML:** OpenCV, Python, TensorFlow\n🏆 **Innovation:** Award-winning project development\n\n🐉 **PRO TIP:** Enable PRO MODE for dragon cursor effects!",
-  'contact': "📞 **Let's Connect!**\n\n📧 Email: thenurasathmira@gmail.com\n📱 Phone: +94 70 400 3956\n💬 WhatsApp: Direct messaging available\n🌍 Location: Padukka, Sri Lanka\n\nI'm always excited to discuss new opportunities and innovative projects!",
-  'experience': "🎯 **My Journey:**\n\n🏆 **SLIC 2024 Silver Medalist** - National recognition\n💻 **Full-Stack Developer** - Modern web solutions\n🔧 **IoT Specialist** - Healthcare & automation systems\n🎬 **Video Editor** - Professional content creation\n🎨 **UI/UX Designer** - User-centered design\n\nI bring creativity and technical excellence to every project!",
-  'education': "📚 **Continuous Learning:**\n\nI'm passionate about staying at the forefront of technology through:\n• Hands-on project development\n• Competition participation\n• Self-directed learning\n• Industry best practices\n• Innovation challenges\n\nLearning never stops in tech! 🚀",
-  'hello': "Hello there! 👋✨ I'm Thenura's AI assistant, powered by advanced conversational AI! I'm here to tell you all about his amazing work, innovative projects, and technical expertise.\n\n🐉 **SECRET:** Try the PRO MODE button for dragon effects!\n\nWhat would you like to explore?",
-  'hi': "Hi! 😊🤖 Welcome to Thenura's portfolio! I'm his intelligent assistant, ready to answer any questions about his projects, skills, achievements, or how to get in touch.\n\n✨ **TIP:** Click the dragon button for PRO MODE!\n\nWhat interests you most?",
-  'medicine': "🏥 **Medicine Reminder Systems** are my specialty!\n\n**V1 Features:**\n• ESP32-CAM with face recognition\n• Automated dispensing\n• Voice prompts & SMS alerts\n\n**V2 Enhancements:**\n• Arduino Mega with 4-slot system\n• Web dashboard interface\n• Advanced scheduling\n\nThese systems help patients never miss their medication!",
-  'video': "🎬 **Professional Video Editing Services:**\n\n• Promotional videos & reels\n• Competition demonstrations\n• Color grading & motion graphics\n• Sound design & mixing\n• Multi-camera editing\n\nI use industry-standard tools like Premiere Pro, After Effects, and DaVinci Resolve to create stunning visual content!",
-  'web': "💻 **Web Development Expertise:**\n\n• Modern React.js applications\n• Responsive design principles\n• Full-stack development\n• Database integration\n• Performance optimization\n\nI create fast, beautiful, and user-friendly web experiences!",
-  'award': "🏆 **SLIC 2024 Silver Medal Achievement:**\n\nI won recognition at the All-Island School Inventors Competition for my innovative project! This national-level competition showcases the best young inventors in Sri Lanka. The achievement represents:\n\n• Technical innovation\n• Problem-solving skills\n• Presentation excellence\n• Real-world impact\n\nIt's a proud moment in my journey!",
-  'pro mode': "🐉 **PRO MODE ACTIVATED!** 🔥\n\nYou've unlocked the ultimate portfolio experience:\n\n• **Dragon Cursor** - Mystical dragon follows your mouse\n• **Enhanced Effects** - Amplified visual effects\n• **Dark Matrix** - Deep space background\n• **Fire Trails** - Dragon leaves glowing trails\n• **Elite Experience** - Premium tech aesthetics\n\nWelcome to the next level! 🚀",
-  'dragon': "🐉 **DRAGON MODE!** 🔥\n\nThe dragon cursor represents power, innovation, and mystical technology! In many cultures, dragons symbolize:\n\n• **Wisdom & Knowledge** - Like Thenura's expertise\n• **Power & Strength** - Technical capabilities\n• **Innovation & Magic** - Creative solutions\n• **Protection & Guidance** - Reliable development\n\nClick the dragon button to unleash the power! ⚡",
-  'default': "🤔 That's an interesting question! I'm here to help you learn about Thenura's work. Try asking about:\n\n• 'projects' - His amazing innovations\n• 'skills' - Technical expertise\n• 'experience' - Professional journey\n• 'contact' - How to reach him\n• 'awards' - Recognition & achievements\n• 'pro mode' - Unlock dragon effects\n\nWhat would you like to know? 😊"
-};
+  // Enhanced AI responses with more personality and detail
+  const botResponses = {
+    'who are you': "I'm Thenura Sathmira! 🚀 A passionate innovator and developer from Sri Lanka. I specialize in creating cutting-edge IoT solutions, stunning web applications, and professional video content. I recently won a Silver Medal at SLIC 2024 for my innovative projects!\n\n💡 Try activating PRO MODE for an enhanced experience!",
+    'projects': "🎯 Here are my featured projects:\n\n🏥 **Medicine Reminder Systems** - IoT healthcare solutions with face recognition\n🎬 **Professional Video Editing** - Award-winning content creation\n🏆 **SLIC 2024 Winner** - Silver medal innovation\n💻 **Web Applications** - Modern, responsive solutions\n\nWhich project interests you most?",
+    'skills': "💪 **My Technical Arsenal:**\n\n🌐 **Frontend:** React.js, HTML5, CSS3, JavaScript\n🔧 **Hardware:** Arduino, ESP32, Raspberry Pi\n🎨 **Design:** UI/UX, Video Editing, Graphics\n🤖 **AI/ML:** OpenCV, Python, TensorFlow\n🏆 **Innovation:** Award-winning project development\n\n🐉 **PRO TIP:** Enable PRO MODE for dragon cursor effects!",
+    'contact': "📞 **Let's Connect!**\n\n📧 Email: thenurasathmira@gmail.com\n📱 Phone: +94 70 400 3956\n💬 WhatsApp: Direct messaging available\n🌍 Location: Padukka, Sri Lanka\n\nI'm always excited to discuss new opportunities and innovative projects!",
+    'experience': "🎯 **My Journey:**\n\n🏆 **SLIC 2024 Silver Medalist** - National recognition\n💻 **Full-Stack Developer** - Modern web solutions\n🔧 **IoT Specialist** - Healthcare & automation systems\n🎬 **Video Editor** - Professional content creation\n🎨 **UI/UX Designer** - User-centered design\n\nI bring creativity and technical excellence to every project!",
+    'education': "📚 **Continuous Learning:**\n\nI'm passionate about staying at the forefront of technology through:\n• Hands-on project development\n• Competition participation\n• Self-directed learning\n• Industry best practices\n• Innovation challenges\n\nLearning never stops in tech! 🚀",
+    'hello': "Hello there! 👋✨ I'm Thenura's AI assistant, powered by advanced conversational AI! I'm here to tell you all about his amazing work, innovative projects, and technical expertise.\n\n🐉 **SECRET:** Try the PRO MODE button for dragon effects!\n\nWhat would you like to explore?",
+    'hi': "Hi! 😊🤖 Welcome to Thenura's portfolio! I'm his intelligent assistant, ready to answer any questions about his projects, skills, achievements, or how to get in touch.\n\n✨ **TIP:** Click the dragon button for PRO MODE!\n\nWhat interests you most?",
+    'medicine': "🏥 **Medicine Reminder Systems** are my specialty!\n\n**V1 Features:**\n• ESP32-CAM with face recognition\n• Automated dispensing\n• Voice prompts & SMS alerts\n\n**V2 Enhancements:**\n• Arduino Mega with 4-slot system\n• Web dashboard interface\n• Advanced scheduling\n\nThese systems help patients never miss their medication!",
+    'video': "🎬 **Professional Video Editing Services:**\n\n• Promotional videos & reels\n• Competition demonstrations\n• Color grading & motion graphics\n• Sound design & mixing\n• Multi-camera editing\n\nI use industry-standard tools like Premiere Pro, After Effects, and DaVinci Resolve to create stunning visual content!",
+    'web': "💻 **Web Development Expertise:**\n\n• Modern React.js applications\n• Responsive design principles\n• Full-stack development\n• Database integration\n• Performance optimization\n\nI create fast, beautiful, and user-friendly web experiences!",
+    'award': "🏆 **SLIC 2024 Silver Medal Achievement:**\n\nI won recognition at the All-Island School Inventors Competition for my innovative project! This national-level competition showcases the best young inventors in Sri Lanka. The achievement represents:\n\n• Technical innovation\n• Problem-solving skills\n• Presentation excellence\n• Real-world impact\n\nIt's a proud moment in my journey!",
+    'pro mode': "🐉 **PRO MODE ACTIVATED!** 🔥\n\nYou've unlocked the ultimate portfolio experience:\n\n• **Dragon Cursor** - Mystical dragon follows your mouse\n• **Enhanced Effects** - Amplified visual effects\n• **Dark Matrix** - Deep space background\n• **Fire Trails** - Dragon leaves glowing trails\n• **Elite Experience** - Premium tech aesthetics\n\nWelcome to the next level! 🚀",
+    'dragon': "🐉 **DRAGON MODE!** 🔥\n\nThe dragon cursor represents power, innovation, and mystical technology! In many cultures, dragons symbolize:\n\n• **Wisdom & Knowledge** - Like Thenura's expertise\n• **Power & Strength** - Technical capabilities\n• **Innovation & Magic** - Creative solutions\n• **Protection & Guidance** - Reliable development\n\nClick the dragon button to unleash the power! ⚡",
+    'default': "🤔 That's an interesting question! I'm here to help you learn about Thenura's work. Try asking about:\n\n• 'projects' - His amazing innovations\n• 'skills' - Technical expertise\n• 'experience' - Professional journey\n• 'contact' - How to reach him\n• 'awards' - Recognition & achievements\n• 'pro mode' - Unlock dragon effects\n\nWhat would you like to know? 😊"
+  };
 
-let isTyping = false;
+  let isTyping = false;
 
-chatbotToggle.addEventListener('click', () => {
-  chatbot.classList.add('active');
-  chatbotToggle.classList.remove('pulse');
-});
+  chatbotToggle.addEventListener('click', () => {
+    chatbot.classList.add('active');
+    chatbotToggle.classList.remove('pulse');
+  });
 
-chatbotClose.addEventListener('click', () => {
-  chatbot.classList.remove('active');
-});
+  chatbotClose.addEventListener('click', () => {
+    chatbot.classList.remove('active');
+  });
 
-function addMessage(message, isUser = false) {
-  const messageDiv = document.createElement('div');
-  messageDiv.className = isUser ? 'user-message' : 'bot-message';
-  messageDiv.innerHTML = `
-    <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
-    <span>${message.replace(/\n/g, '<br>')}</span>
-  `;
-  chatMessages.appendChild(messageDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function showTypingIndicator() {
-  const typingDiv = document.createElement('div');
-  typingDiv.className = 'typing-indicator';
-  typingDiv.id = 'typingIndicator';
-  typingDiv.innerHTML = `
-    <i class="fas fa-robot"></i>
-    <span>Thenura's AI is thinking</span>
-    <div class="typing-dot"></div>
-    <div class="typing-dot"></div>
-    <div class="typing-dot"></div>
-  `;
-  chatMessages.appendChild(typingDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function removeTypingIndicator() {
-  const typingIndicator = document.getElementById('typingIndicator');
-  if (typingIndicator) {
-    typingIndicator.remove();
+  function addMessage(message, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = isUser ? 'user-message' : 'bot-message';
+    messageDiv.innerHTML = `
+      <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
+      <span>${message.replace(/\n/g, '<br>')}</span>
+    `;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
-}
 
-function getBotResponse(userMessage) {
-  const message = userMessage.toLowerCase();
-  for (const key in botResponses) {
-    if (message.includes(key)) {
-      return botResponses[key];
+  function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'typing-indicator';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.innerHTML = `
+      <i class="fas fa-robot"></i>
+      <span>Thenura's AI is thinking</span>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    `;
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function removeTypingIndicator() {
+    const typingIndicator = document.getElementById('typingIndicator');
+    if (typingIndicator) {
+      typingIndicator.remove();
     }
   }
-  return botResponses.default;
-}
 
-function sendMessage() {
-  const message = chatInput.value.trim();
-  if (message && !isTyping) {
-    isTyping = true;
-    addMessage(message, true);
-    chatInput.value = '';
-    
-    showTypingIndicator();
-    
-    setTimeout(() => {
-      removeTypingIndicator();
-      const response = getBotResponse(message);
-      addMessage(response);
-      isTyping = false;
-    }, 1000 + Math.random() * 1000); // Random delay for more natural feel
+  function getBotResponse(userMessage) {
+    const message = userMessage.toLowerCase();
+    for (const key in botResponses) {
+      if (message.includes(key)) {
+        return botResponses[key];
+      }
+    }
+    return botResponses.default;
   }
-}
 
-chatSend.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter' && !isTyping) sendMessage();
+  function sendMessage() {
+    const message = chatInput.value.trim();
+    if (message && !isTyping) {
+      isTyping = true;
+      addMessage(message, true);
+      chatInput.value = '';
+      
+      showTypingIndicator();
+      
+      setTimeout(() => {
+        removeTypingIndicator();
+        const response = getBotResponse(message);
+        addMessage(response);
+        isTyping = false;
+      }, 1000 + Math.random() * 1000); // Random delay for more natural feel
+    }
+  }
+
+  chatSend.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !isTyping) sendMessage();
+  });
+
+  // Add pulse effect to chatbot toggle periodically
+  setInterval(() => {
+    if (!chatbot.classList.contains('active')) {
+      chatbotToggle.classList.add('pulse');
+      setTimeout(() => chatbotToggle.classList.remove('pulse'), 2000);
+    }
+  }, 15000);
 });
 
-// Add pulse effect to chatbot toggle periodically
-setInterval(() => {
-  if (!chatbot.classList.contains('active')) {
-    chatbotToggle.classList.add('pulse');
-    setTimeout(() => chatbotToggle.classList.remove('pulse'), 2000);
-  }
-}, 15000);
-
-// ====== CONTACT FORM WITH EMAILJS ======
-// Initialize EmailJS (you'll need to replace with your actual keys)
-// emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
-
-const contactForm = document.getElementById('contactForm');
-contactForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  const formData = {
-    from_name: document.getElementById('fromName').value,
-    from_email: document.getElementById('fromEmail').value,
-    subject: document.getElementById('subject').value,
-    message: document.getElementById('message').value
-  };
-  
-  // For demo purposes, show success message
-  alert('Message sent successfully! 🎉\n\nNote: To enable actual email sending, configure EmailJS with your credentials.');
-  contactForm.reset();
-  
-  // Replace with your EmailJS service ID and template ID
-  // emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData)
-  //   .then(() => {
-  //     alert('Message sent successfully! 🎉');
-  //     contactForm.reset();
-  //   })
-  //   .catch(() => {
-  //     alert('Failed to send message. Please try again or contact directly via email/WhatsApp.');
-  //   });
-});
-
-// ====== PDF DOWNLOAD ======
-document.getElementById('downloadPDF').addEventListener('click', (e) => {
-  e.preventDefault();
-  
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  
-  // Add content to PDF
-  doc.setFontSize(20);
-  doc.text('Thenura Sathmira', 20, 30);
-  doc.setFontSize(12);
-  doc.text('Web Developer | IoT Specialist | Video Editor', 20, 40);
-  doc.text('Email: thenurasathmira@gmail.com', 20, 55);
-  doc.text('Phone: +94 70 400 3956', 20, 65);
-  doc.text('Location: Padukka', 20, 75);
-  
-  doc.setFontSize(16);
-  doc.text('Skills:', 20, 95);
-  doc.setFontSize(12);
-  doc.text('• Frontend Development (HTML, CSS, JavaScript, React)', 25, 105);
-  doc.text('• Arduino/ESP32 Programming', 25, 115);
-  doc.text('• Video Editing (Premiere Pro, After Effects)', 25, 125);
-  doc.text('• UI/UX Design', 25, 135);
-  doc.text('• IoT Systems Development', 25, 145);
-  
-  doc.setFontSize(16);
-  doc.text('Featured Projects:', 20, 165);
-  doc.setFontSize(12);
-  doc.text('• Medicine Reminder System (IoT)', 25, 175);
-  doc.text('• Professional Video Editing Services', 25, 185);
-  doc.text('• SLIC 2024 Silver Medal Winner', 25, 195);
-  doc.text('• Web-based Patient Management System', 25, 205);
-  
-  doc.save('Thenura_Sathmira_Portfolio.pdf');
+// ====== CONTACT FORM ======
+document.addEventListener('DOMContentLoaded', () => {
+  const contactForm = document.getElementById('contactForm');
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const formData = {
+      from_name: document.getElementById('fromName').value,
+      from_email: document.getElementById('fromEmail').value,
+      subject: document.getElementById('subject').value,
+      message: document.getElementById('message').value
+    };
+    
+    // For demo purposes, show success message
+    alert('Message sent successfully! 🎉\n\nNote: To enable actual email sending, configure EmailJS with your credentials.');
+    contactForm.reset();
+  });
 });
