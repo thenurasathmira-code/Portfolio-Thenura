@@ -43,6 +43,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: -2;
+  display: none; /* Removed for cleaner look */
 }
 
 .scanlines {
@@ -50,7 +51,7 @@ body {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: repeating-linear-gradient(to bottom, rgba(0,229,255,0.03) 0 1px, transparent 1px 3px);
+  display: none; /* Removed for cleaner look */
 }
 
 /* === MATRIX RAIN EFFECT === */
@@ -60,7 +61,7 @@ body {
   z-index: -3;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.1;
+  display: none; /* Removed for cleaner look */
 }
 
 .matrix-char {
@@ -88,6 +89,7 @@ body {
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  display: none; /* Removed for cleaner look */
 }
 
 .floating-particles::before,
@@ -509,7 +511,7 @@ main {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, rgba(0,229,255,0.2) 30%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, rgba(0,229,255,0.05) 20%, transparent 40%);
   opacity: 1;
   transition: all 0.1s ease;
   pointer-events: none;
@@ -576,7 +578,7 @@ main {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.5;
+  display: none; /* Removed for cleaner look */
 }
 
 .floating-chip {
@@ -1510,11 +1512,11 @@ footer {
   }
   
   .photoFrame {
-    width: min(300px, 80vw);
+    width: min(250px, 70vw);
   }
   
   .title {
-    font-size: 32px;
+    font-size: 28px;
   }
   
   .subtitle {
@@ -1522,21 +1524,25 @@ footer {
   }
   
   .type {
-    font-size: 18px;
+    font-size: 16px;
   }
   
   .actions {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 12px;
-    align-items: stretch;
+    justify-content: center;
   }
   
   .btn {
     text-align: center;
+    flex: 1;
+    min-width: 120px;
   }
   
   .socials {
     justify-content: center;
+    flex-wrap: wrap;
   }
   
   .nav {
@@ -1544,7 +1550,7 @@ footer {
   }
   
   .menu {
-    gap: 12px;
+    display: none; /* Hide menu on mobile for cleaner look */
   }
   
   .menu a {
@@ -1569,20 +1575,24 @@ footer {
   
   .skillsGrid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
   }
   
   .skill-tabs {
     gap: 6px;
     justify-content: center;
+    flex-wrap: wrap;
   }
   
   .tab-btn {
     padding: 10px 16px;
     font-size: 14px;
+    flex: 1;
+    min-width: 100px;
   }
   
   .grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: 20px;
   }
   
@@ -1620,19 +1630,39 @@ footer {
   .slide-content p {
     font-size: 14px;
   }
-}
-
-@media (max-width: 640px) {
-  .menu {
+  
+  /* Disable 3D effects on mobile for better performance */
+  .photoFrame {
+    transform: none !important;
+  }
+  
+  .project-card {
+    transform: none !important;
+  }
+  
+  .skill {
+    transform: none !important;
+  }
+  
+  /* Simplify cursor on mobile */
+  #cursorDot,
+  #cursorRing {
     display: none;
   }
   
+  body {
+    cursor: auto;
+  }
+}
+
+@media (max-width: 640px) {
   .title {
-    font-size: 28px;
+    font-size: 24px;
   }
   
   .hero {
     padding: 20px 12px;
+    min-height: 70vh;
   }
   
   .section {
@@ -1656,5 +1686,36 @@ footer {
     width: 35px;
     height: 35px;
     font-size: 12px;
+  }
+  
+  .photoFrame {
+    width: min(200px, 60vw);
+  }
+  
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+  
+  .skill-tabs {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .tab-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .chatbot {
+    width: calc(100vw - 20px);
+    height: 400px;
+    bottom: 80px;
+    right: 10px;
+    left: 10px;
   }
 }
